@@ -8,7 +8,7 @@ This Repository contains the files to the Scooter Konsortium Project done by the
 # Requirements
 
 
-## java program
+## Java Programm
 ### Setup-Mode:
 * Erzeugen eines Ladepunktes (User Input)
 * Erzeugen einer Firma (User Input)
