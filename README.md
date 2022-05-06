@@ -2,8 +2,6 @@
 
 This Repository contains the files to the Scooter Konsortium Project done by the DI01 at BTR.
 
-403
-
 
 # Requirements
 
@@ -30,7 +28,5 @@ This Repository contains the files to the Scooter Konsortium Project done by the
 * Wenn Scooter ausgewält der Weniger als 30 % hat. Dann nächsten Ladepunkt anzeigen. Scooter kann nicht bewegt werden.
 * Benutzer kann Scooter zum Ladepunkt bewegen, Zustand auf "lädt". Ladepunkt Counter höher.
 * Akuteller Zustand von allem wird gespeichert.
-
-403
 
     
