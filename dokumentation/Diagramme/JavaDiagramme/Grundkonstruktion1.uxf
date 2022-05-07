@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>250</y>
+      <w>260</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Firma&gt;&gt;
+-
+- sNameFirma : String 
+- dKostenJeFahrt : Double
+- sAdresse: String 
+- iPLZ: int
+- sStadt: String 
+- lHotline: Long 
+-
++ getName(): String 
++ setName (sNameFirma: String): void
+
++ getAdresse(): String
++ setAdresse (sAdresse: String): void 
+
++ getPLZ(): int
++ setPLZ(iPLZ: int): void
+
++ getStadt(): void 
++ setStadt(sStadt: String): void 
+
++ getHotline(): long 
++ setHotline(lHotline: long): long </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1180</x>
+      <y>800</y>
+      <w>350</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Scooter&gt;&gt;
+-
+- oCurrentKoord: Koordinaten
+- iCurrentProzent: int 
+- dCurrentEarn: double
+- iCoveredKm: int 
+- bCurrentStatus: boolean
+-
++ getCurrentKoord(): Koordiaten
++ setCurrentKoord(oCurrentKoord: Koordinaten): void 
+
++ getCurrentProzent(): int 
++ setCurrentProzent(iCurrentProzent: int): void 
+
++ getCurrentEarn(): double 
++ setCurrentEarn(dCurrentEarn: double): void 
+
++ getCorveredKm(): int 
++ setCoveredKm(iCoveredKm: int): void 
+
++ getCurrentStatus(): boolean 
++ setCurrentStatus(bCurrentStatus: boolean): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1170</x>
+      <y>260</y>
+      <w>370</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Ladepunkt&gt;&gt;
+-
+- sNameLadepunkt: String 
+- oFixKoord: Koordinaten 
+- iLadeCap: int
+- iCurrentUse: int 
+-
++ getNameLadepunkt(): String 
++ setNameLadepunkt(sNameLadepunkt: String): void 
+
++ getFixKoord(): Koordinaten
++ setFixKoord(oFixKoord: Koordianten): void 
+
++ getLadeCap(): int 
++ setLadeCap(iLadeCap: int): void 
+
++ getCurrentUse(): int
++ setCurrentUse(iCurrentUse: int): void </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>750</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Koordinaten&gt;&gt;
+-
+
+-
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>360</y>
+      <w>500</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1..n
+</panel_attributes>
+    <additional_attributes>10.0;20.0;480.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1330</x>
+      <y>630</y>
+      <w>50</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=0..n
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+</diagram>
