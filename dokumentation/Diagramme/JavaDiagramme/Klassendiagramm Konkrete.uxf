@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>212</x>
+      <y>376</y>
+      <w>104</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Firma&gt;&gt;
+Package::konsortiumdata
+-
+- sNameFirma : String 
+- dKostenJeFahrt : Double
+- sAdresse: String 
+- iPLZ: int
+- sStadt: String 
+- sHotline: String
+# aoScooter: ArrayList&lt;Scooter&gt;
+# aoladepunkte: ArrayList&lt;Ladepunkt&gt;
+-
++ getName(): String 
++ setName (sNameFirma: String): void
+
++ getAdresse(): String
++ setAdresse (sAdresse: String): void 
+
++ getPLZ(): int
++ setPLZ(iPLZ: int): void
+
++ getStadt(): void 
++ setStadt(sStadt: String): void 
+
++ getHotline(): long 
++ setHotline(lHotline: long): long </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>176</x>
+      <y>188</y>
+      <w>140</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Scooter&gt;&gt;
+Package::konsortiumdata
+-
+- oCurrentKoord: Koordinaten
+- iCurrentProzent: int 
+- dCurrentEarn: double
+- iCoveredKm: int 
+- bCurrentStatus: boolean
+-
++ getCurrentKoord(): Koordiaten
++ setCurrentKoord(oCurrentKoord: Koordinaten): void 
+
++ getCurrentProzent(): int 
++ setCurrentProzent(iCurrentProzent: int): void 
+
++ getCurrentEarn(): double 
++ setCurrentEarn(dCurrentEarn: double): void 
+
++ getCorveredKm(): int 
++ setCoveredKm(iCoveredKm: int): void 
+
++ getCurrentStatus(): boolean 
++ setCurrentStatus(bCurrentStatus: boolean): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>172</x>
+      <y>560</y>
+      <w>148</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Ladepunkt&gt;&gt;
+Package::konsortiumdata
+-
+- sNameLadepunkt: String 
+- oFixKoord: Koordinaten 
+- iLadeCap: int
+- iCurrentUse: int 
+-
++ getNameLadepunkt(): String 
++ setNameLadepunkt(sNameLadepunkt: String): void 
+
++ getFixKoord(): Koordinaten
++ setFixKoord(oFixKoord: Koordianten): void 
+
++ getLadeCap(): int 
++ setLadeCap(iLadeCap: int): void 
+
++ getCurrentUse(): int
++ setCurrentUse(iCurrentUse: int): void </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>16</y>
+      <w>84</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Koordinaten&gt;&gt;
+-
++ iX: int 
++ iY: int
+-
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>264</x>
+      <y>524</y>
+      <w>20</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>336</y>
+      <w>20</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1
+m1=0..n</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>652</x>
+      <y>488</y>
+      <w>84</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Main&gt;&gt;
+Package::scooterknsortium
+--
+-oUserInterface: UserOnterface
+-oDatenbank: Datenbank
+ 
+--
++main(String[] args)
++
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>372</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;UserInterface&gt;&gt;
+Package::scooterknsortium
+--
+-oMap: Map
+ 
+--
++
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>272</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Map&gt;&gt;
+Package::mapping
+
+--
+-oRednerer: Renderer
+--
++render()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>172</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;MapTextRenderer&gt;&gt;
+Package::mapping
+--
+
+--
++redner(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>72</y>
+      <w>84</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;MapObjekt&gt;&gt;
+Package::mapping
+--
+#oKoord: Koordinaten
+--
++render()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>616</x>
+      <y>48</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>344</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>444</y>
+      <w>12</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>72</y>
+      <w>84</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Map
+Package::mapping
+--
+#aoMap: MapObjekt[][]
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>764</x>
+      <y>172</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;MapGraphicRenderer&gt;&gt;
+Package::mapping
+--
+
+--
++redner(): UiElement</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>100</y>
+      <w>12</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>100</y>
+      <w>100</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>230.0;180.0;230.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>244</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>828</x>
+      <y>372</y>
+      <w>176</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;PathFindingAlgorithm&gt;&gt;
+Package::pathFinding
+--
+-oMap: Map
+--
++findQuickest(oStart: Koordiate, oEnd: Koordinate): Koordinate[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>436</x>
+      <y>408</y>
+      <w>160</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;KonsortiumData&gt;&gt;
+Package::konsortiumdata
+
+--
+-oFirmen: ArrayList&lt;Firma&gt;
+-
++pushAllData()
++pushFirmen()
++pushFirma(sNameFirma: String)
++pushScooter(sNameFirma: String)
++pushLadepunkt(sNameFirma: String)
++getLadepukte(sNameFirma: String): Ladepunkt[]
++getScooter(sNameFirma: String): Scooter[]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>616</y>
+      <w>104</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Datenbank&gt;&gt;
+Package::database
+--
+-oDBConnection: DatenbankVerbindung 
+--
++load():
++putScooter(oScooter: Scooter) 
++putFirma(oFirma: Firma)
++putLadepunkt(oLadepunkt: Ladepunkt)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>892</x>
+      <y>824</y>
+      <w>176</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;DatenbankVerbindung&gt;&gt;
+Package::database
+--
+-aoServers: ArrayList&lt;DatabaseServer&gt;
+--
++findNewest(): DatabaseServer
++findNearest(): DatabaseServer
++findBest(): DatabaseServer
++connectTo(oDatabaseServer: DatabaseServer): (mysqlConnection)
++sendQuerry(String sQuerry): String[][]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>688</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>556</y>
+      <w>12</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>892</x>
+      <y>740</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;DatabaseServer&gt;&gt;
+Package::database
+--
+-sAddress: String
+-iPort: int
+-iVersion: int
+--
++getAddress(): String
++getPort(): int
++getVersion(): int
++setAddress(sAddress: String)
++setPort(iPort: int)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>676</x>
+      <y>728</y>
+      <w>176</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;DatenbankVerbindung&gt;&gt;
+Package::database
+--
+-oConnection
+-sAddress: String
+-iPort: int
+--
++connect(): (mysqlConnection)
++disconnect()
++sendQuerry(String sQuerry): String[][]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>444</y>
+      <w>12</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;430.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>592</x>
+      <y>444</y>
+      <w>68</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>150.0;210.0;90.0;210.0;90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>112</y>
+      <w>316</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;370.0;770.0;370.0;770.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>316</x>
+      <y>112</y>
+      <w>312</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;1380.0;190.0;1380.0;190.0;370.0;760.0;370.0;760.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>444</y>
+      <w>132</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>310.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>404</y>
+      <w>80</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>304</y>
+      <w>168</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>400.0;170.0;400.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
