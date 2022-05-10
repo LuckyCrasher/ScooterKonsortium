@@ -5,7 +5,7 @@ public class DatenbankVerbindung {
 	private String sAddress;
 	private int iPort;
 	
-	//hä siehe Diagramm
+	//ha siehe Diagramm
 	public void connect(mysqlConnection) {
 		
 	}
