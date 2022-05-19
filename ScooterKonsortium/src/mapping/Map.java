@@ -1,6 +1,9 @@
 package mapping;
 
-public interface Map {
-	//protected 
-	protected MapObjekt oMap = new MapObjekt();
+public class Map {
+	private MapTextRenderer oRenderer;
+	
+	public void render() {
+		
+	}
 }

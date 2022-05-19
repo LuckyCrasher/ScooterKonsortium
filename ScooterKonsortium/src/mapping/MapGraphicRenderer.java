@@ -1,6 +1,6 @@
 package mapping;
 
-public class MapGraphicRenderer implements Map {
+public class MapGraphicRenderer implements MapInterface {
 	public UiElement render() {
 		return null;
 	}

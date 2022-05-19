@@ -1,4 +1,5 @@
 package konsortiumdata;
+import mapping.*;
 
 public class Scooter extends MapObjekt {
 	private Koordinaten oCurrentKoord = new Koordinaten();

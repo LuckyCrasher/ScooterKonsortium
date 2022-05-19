@@ -1,6 +1,6 @@
 package mapping;
 
-public class MapTextRenderer implements Map {
+public class MapTextRenderer implements MapInterface {
 	public String render() {
 		return null;
 	}

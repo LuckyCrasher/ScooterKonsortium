@@ -1,4 +1,5 @@
 package konsortiumdata;
+import mapping.*;
 
 public class Ladepunkt {
 	private String sNameLadepunkt;
