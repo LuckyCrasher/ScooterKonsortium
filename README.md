@@ -1,7 +1,8 @@
 # ScooterKonsortium
 
 This Repository contains the files to the Scooter Konsortium Project done by the DI01 at BTR.
-
+The Project Timeline can be found here:
+    https://twostone.atlassian.net/jira/core/projects/SKB/timeline
 
 # Requirements
 
