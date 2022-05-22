@@ -1,14 +1,22 @@
 package konsortiumdata;
 
 public class Firma {
-	private String sNameFirma;
-	private double KostenJeFahrt;
-	private String sAdresse;
-	private int iPLZ;
-	private String sStadt;
-	private String sHotline;
+	private String sNameFirma = "null";
+	private double KostenJeFahrt = 0.0;
+	private String sAdresse = "null";
+	private int iPLZ = 0;
+	private String sStadt = "null";
+	private String sHotline = "0";
 	
-	//Scooter Arraylist implementieren (siehe Klassendiagramm)
+	public Firma (String psNameFirma, double pdKostenJeFahrt, String psAdresse, int piPLZ, String psStadt, String psHotline) {
+		this.sNameFirma = psNameFirma;
+		this.KostenJeFahrt = pdKostenJeFahrt;
+		this.sAdresse = psAdresse; 
+		this.iPLZ = piPLZ;
+		this.sStadt = psStadt;
+		this.sHotline = psHotline;
+	}
+	
 
 	public String getName() {
 		return sNameFirma;

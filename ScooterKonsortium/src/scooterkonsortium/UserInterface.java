@@ -1,6 +1,7 @@
 package scooterkonsortium;
 import java.util.Scanner;
 
+import konsortiumdata.*;
 import mapping.*;
 
 public class UserInterface {
@@ -44,4 +45,19 @@ public class UserInterface {
 	public void showMenu() {
 		menus.drawUserInterface(selMenu);
 	}
+	
+	//Setup Mode:
+	Ladepunkt testLadepunkt;
+	Firma testFirma;
+	public void createLadepunkt(String psName, Koordinaten poFixKoord, int piLadeCap, int piCurrentUse) {
+		testLadepunkt = new Ladepunkt(psName,poFixKoord,piLadeCap,piCurrentUse);
+	}
+	public void createFirma(String psNameFirma, double pdKostenJeFahrt, String psAdresse, int piPLZ,String psStadt, String psHotline) {
+		testFirma = new Firma(psNameFirma, pdKostenJeFahrt, psAdresse, piPLZ, psStadt, psHotline);
+	}
+	public void createScooter() {
+		
+	}
+	
+	
 }

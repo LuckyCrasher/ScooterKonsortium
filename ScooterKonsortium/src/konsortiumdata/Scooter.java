@@ -16,7 +16,7 @@ public class Scooter extends MapObjekt {
 		this.oCurrentKoord = poCurrentKoord;
 	}
 	
-	public int getCurrentPorzent() {
+	public int getCurrentProzent() {
 		return iCurrentProzent;
 	}
 	

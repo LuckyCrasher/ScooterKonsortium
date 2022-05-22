@@ -2,10 +2,17 @@ package konsortiumdata;
 import mapping.*;
 
 public class Ladepunkt {
-	private String sNameLadepunkt;
+	private String sNameLadepunkt = "null";
 	private Koordinaten oFixKoord = new Koordinaten();
-	private int iLadeCap;
-	private int iCurrentUse;
+	private int iLadeCap = 0;
+	private int iCurrentUse = 0;
+	
+	public Ladepunkt(String psNameLadepunkt, Koordinaten poFixKoord, int piLadeCap, int piCurrentUse) {
+		this.sNameLadepunkt = psNameLadepunkt;
+		this.oFixKoord = poFixKoord;
+		this.iLadeCap = piLadeCap;
+		this.iCurrentUse = piCurrentUse;
+	}
 	
 	public String getNameLadepunkt() {
 		return sNameLadepunkt;
