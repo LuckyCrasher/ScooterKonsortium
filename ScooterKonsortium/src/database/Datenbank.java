@@ -1,5 +1,7 @@
 package database;
 
+import konsortiumdata.*;
+
 public class Datenbank {
 	private DatenbankVerbindung oDBConnection = new DatenbankVerbindung();
 	

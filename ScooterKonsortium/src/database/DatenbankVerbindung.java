@@ -15,7 +15,7 @@ public class DatenbankVerbindung {
 	}
 	
 	public String sendQuerry(String sQuerry) {
-		
+		return "";
 	}
 	
 }

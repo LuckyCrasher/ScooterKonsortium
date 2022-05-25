@@ -15,7 +15,7 @@ public class DatabaseServer {
 	
 	
 	public int getPort() {
-		return null;
+		return 0;
 	}
 	
 	public void setPort() {
@@ -24,7 +24,7 @@ public class DatabaseServer {
 	
 	
 	public int getVersion() {
-		return null;
+		return 0;
 	}
 	
 }

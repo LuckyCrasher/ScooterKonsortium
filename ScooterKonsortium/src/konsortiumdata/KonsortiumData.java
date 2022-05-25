@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class KonsortiumData {
 	//noch nicht richtig (siehe Diagramm)
-	private Firma oFirmen = new Firma();
+	//private Firma oFirmen = new Firma();
 	
 	
 	public void pushAllData() {

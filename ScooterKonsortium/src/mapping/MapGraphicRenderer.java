@@ -1,7 +1,7 @@
 package mapping;
 
 public class MapGraphicRenderer implements MapInterface {
-	public UiElement render() {
-		return null;
-	}
+
+	//should return an image or ui element
+	
 }
