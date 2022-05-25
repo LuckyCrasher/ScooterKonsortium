@@ -14,6 +14,13 @@ public class Ladepunkt {
 		this.iCurrentUse = piCurrentUse;
 	}
 	
+	public Ladepunkt() {
+		this.sNameLadepunkt = "";
+		this.oFixKoord = new Koordinaten();
+		this.iLadeCap = 0;
+		this.iCurrentUse = 0;
+	}
+	
 	public String getNameLadepunkt() {
 		return sNameLadepunkt;
 	}

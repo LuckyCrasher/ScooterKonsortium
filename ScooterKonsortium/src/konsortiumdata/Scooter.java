@@ -15,6 +15,15 @@ public class Scooter extends MapObjekt {
 		this.iCoveredKm = piCoveredKm;
 		this.bCurrentStatus = pbCurrentStatus;
 	}
+	
+	public Scooter() {
+		this.oCurrentKoord = new Koordinaten();
+		this.iCurrentProzent = 0;
+		this.dCurrentEarn = 0.0;
+		this.iCoveredKm = 0;
+		this.bCurrentStatus = false;
+	}
+	
 	public Koordinaten getCurrentKoord() {
 		return oCurrentKoord;
 	}

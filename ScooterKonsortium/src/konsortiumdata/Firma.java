@@ -1,22 +1,37 @@
 package konsortiumdata;
 
+import java.util.ArrayList;
+
 public class Firma {
-	private String sNameFirma = "null";
-	private double KostenJeFahrt = 0.0;
-	private String sAdresse = "null";
-	private int iPLZ = 0;
-	private String sStadt = "null";
-	private String sHotline = "0";
+	private String sNameFirma;
+	private double dKostenJeFahrt;
+	private String sAdresse;
+	private int iPLZ;
+	private String sStadt;
+	private String sHotline;
+	
+	private ArrayList<Scooter> aoScooter = new ArrayList<>();
+	private ArrayList<Ladepunkt> aoLadepunkte = new ArrayList<>();
 	
 	public Firma (String psNameFirma, double pdKostenJeFahrt, String psAdresse, int piPLZ, String psStadt, String psHotline) {
 		this.sNameFirma = psNameFirma;
-		this.KostenJeFahrt = pdKostenJeFahrt;
+		this.dKostenJeFahrt = pdKostenJeFahrt;
 		this.sAdresse = psAdresse; 
 		this.iPLZ = piPLZ;
 		this.sStadt = psStadt;
 		this.sHotline = psHotline;
 	}
 	
+	public Firma () {
+		// Much cleaner to init values here
+		// Only needed by manual creation through user...
+		this.sNameFirma = "";
+		this.dKostenJeFahrt = 0.0;
+		this.sAdresse = "";
+		this.iPLZ = 0;
+		this.sStadt = "";
+		this.sHotline = "";
+	}
 
 	public String getName() {
 		return sNameFirma;
@@ -62,5 +77,34 @@ public class Firma {
 
 	public void setHotline(String psHotline) {
 		this.sHotline = psHotline;
+	}
+	
+	/**
+	 * Adds a scooter to the Companies list of scooters
+	 * @param oScooter
+	 */
+	public void putScooter(Scooter oScooter) {
+		this.aoScooter.add(oScooter);
+	}
+	
+	/**
+	 * Adds a Ladepunkt to the Companies list of Ladepunkte
+	 * @param oLadepunkt
+	 */
+	public void putLadepunkt(Ladepunkt oLadepunkt) {
+		this.aoLadepunkte.add(oLadepunkt);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(String.format("Name: %s%n", this.sNameFirma));
+		sb.append(String.format("Costs: %s%n", this.dKostenJeFahrt));
+		sb.append(String.format("Address: %s%n", this.sAdresse));
+		sb.append(String.format("Post Code: %s%n", this.iPLZ));
+		sb.append(String.format("City: %s%n", this.sStadt));
+		sb.append(String.format("Hotline: %s%n", this.sHotline));
+
+		return sb.toString();
 	}
 }

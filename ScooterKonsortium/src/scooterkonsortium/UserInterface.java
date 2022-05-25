@@ -7,128 +7,119 @@ import mapping.*;
 
 public class UserInterface {
 	private Map oMap = new Map();
-
+	private KonsortiumData oData;
+	
 	private Menus menus;
 	private Scanner sc;
 	private String selMenu = "main";
 
-	public UserInterface() {
+	/*
+	 *  create temporary objects
+	 *  These will be filled and the references will be added where needed.
+	 *  Then these attributes will be assigned new empty temporary objects
+	 */
+	private Firma tmpFirma;
+	private Scooter tmpScooter;
+	private Ladepunkt tmpLadepunkt;
+	private boolean bRunning;
+	
+	public UserInterface(KonsortiumData oData) {
+		this.oData = oData;
+		
 		this.sc = new Scanner(System.in);
 		this.menus = new Menus(sc);
-
+		this.bRunning = true;
+		
+		this.tmpFirma = new Firma();
+		this.tmpScooter = new Scooter();
+		this.tmpLadepunkt = new Ladepunkt();
+		
 		createMenus();
 	}
 
-	private void changeMode() {
-		System.out.println("CHANGING MODE");
-	}
-
 	private void createMenus() {
-		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode" };
-		char[] controls1 = new char[] { 'O', 'S' };
-		Runnable[] functions1 = new Runnable[] { () -> selMenu = "operative", () -> selMenu = "setup" };
-		menus.createMenu("main", entries1, controls1, functions1);
+		/* 
+		 * Main Menu
+		 * Erlaubt es einen Modus zu wÃ¤hlen 
+		*/
+		
+		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Quit" };
+		char[] controls1 = new char[] { 'O', 'S', 'Q'};
+		Runnable[] functions1 = new Runnable[] { () -> selMenu = "operative", () -> selMenu = "setup", ()->this.bRunning=false};
+		menus.createMenu("main", this, entries1, controls1, functions1);
 
-		String[] entries2 = new String[] { "Go to Operative mode" };
-		char[] controls2 = new char[] { 'O' };
-		Runnable[] functions2 = new Runnable[] { () -> selMenu = "operative" };
-		menus.createMenu("operative", entries2, controls2, functions2);
-		// opertive vorher Setup
-		String[] entries3 = new String[] { "Go to Setup Mode" };
-		char[] controls3 = new char[] { 'S' };
-		Runnable[] functions3 = new Runnable[] {this::SetupMode};
-		menus.createMenu("setup", entries3, controls3, functions3);
+		/* 
+		 * Operative Mode
+		 * Macht nicht viel
+		 */
+		String[] entries2 = new String[] { "Go to Setup mode" };
+		char[] controls2 = new char[] { 'S' };
+		Runnable[] functions2 = new Runnable[] { () -> selMenu = "setup" };
+		menus.createMenu("operative", this, entries2, controls2, functions2);
+		
+		
+		/*
+		 * Setup Mode
+		 * erlaubt das erstellen von Elementen
+		 */
+		
+		String[] entries3 = new String[] { "Go to Operative Mode", "Create new company"};
+		char[] controls3 = new char[] { 'O', 'C' };
+		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->selMenu="new company"};
+		menus.createMenu("setup", this, entries3, controls3, functions3);
 
-		String[] entries4 = new String[] { "Create New Company" };
-		char[] controls4 = new char[] { 'C' };
-		Runnable[] functions4 = new Runnable[] { () -> selMenu = "new company"};
-		menus.createMenu("new comapany", entries4, controls4, functions4);
+		/*
+		 * Create Firma Menu
+		 * erlaubt es werte fÃ¼r die neue Firma zu setzen
+		 */
+		
+		String[] entries4 = new String[] { "Set name",
+				"Set road",
+				"Set post code",
+				"Set city",
+				"Set hotline",
+				"Back (Abort)",
+				"Save"};
+		char[] controls4 = new char[] { 'N', 'R', 'P', 'C', 'H', 'B', 'S'};
+		Runnable[] functions4 = new Runnable[] {
+				()->this.tmpFirma.setName(getUserStringInput("Company name")),
+				()->this.tmpFirma.setAdresse(getUserStringInput("Road name")),
+				()->this.tmpFirma.setPLZ(this.getUserIntInput("Company post code")),
+				()->this.tmpFirma.setStadt(this.getUserStringInput("Company city")),
+				()->this.tmpFirma.setHotline(this.getUserStringInput("Company hotline")),
+				()->this.selMenu="setup",
+				this::saveCompany
+				};
+		menus.createMenu("new company", this, entries4, controls4, functions4);
+		
 	}
-
+	
+	private String getUserStringInput(String sPrompt) {
+		System.out.printf("%s ->", sPrompt);
+		return sc.nextLine();
+	}
+	
+	private int getUserIntInput(String sPrompt) {
+		System.out.printf("%s ->", sPrompt);
+		return sc.nextInt();
+	}
+	
 	public void showMenu() {
 		menus.drawUserInterface(selMenu);
 	}
-
-	// Setup Mode:
-	Ladepunkt testLadepunkt;
-	Firma testFirma;
-	Scooter testScooter;
-
-	public void createLadepunkt(String psName, Koordinaten poFixKoord, int piLadeCap, int piCurrentUse) {
-		testLadepunkt = new Ladepunkt(psName, poFixKoord, piLadeCap, piCurrentUse);
+	
+	private void saveCompany() {
+		System.out.println("Saving Firma");
+		this.oData.addFirma(tmpFirma);
+		this.tmpFirma = null;
+		this.tmpFirma = new Firma();
+		this.selMenu = "setup";
 	}
 
-	public void createLadepunktMethode() {
-		this.sc = new Scanner(System.in);
-		System.out.println("Name des Ladepunktes");
-		String temp = sc.nextLine();
-
-		System.out.println("Koordinaten des Ladepunktes");
-		// Koordinaten temp2 = sc.nextObject();
-		// nextobject oder sowas ähnliches gibt es nicht, was soll ich dann machen
-		System.out.println("Wieviele Ladestellen hat der Ladepunkt");
-		int temp3 = sc.nextInt();
-
-		System.out.println("Wieviele Ladestellen werden gerade benutzt");
-		int temp4 = sc.nextInt();
-
-		this.createLadepunkt(temp, null, temp3, temp4);
-	}
-
-	public void createFirma(String psNameFirma, double pdKostenJeFahrt, String psAdresse, int piPLZ, String psStadt,
-			String psHotline) {
-		testFirma = new Firma(psNameFirma, pdKostenJeFahrt, psAdresse, piPLZ, psStadt, psHotline);
-	}
-
-	public void createFirmaMethod() {
-		// die ganzen Temp Variablen kann man bestimmt in einer ArrayList oder so machen
-		this.sc = new Scanner(System.in);
-		System.out.println("Name der Firma");
-		String temp = sc.nextLine();
-
-		System.out.println("Adresse der Firma");
-		String temp2 = sc.nextLine();
-
-		System.out.println("Postleitzahl der Firma");
-		int temp3 = sc.nextInt();
-
-		System.out.println("Stadt der Firma");
-		String temp4 = sc.nextLine();
-
-		System.out.println("Hotline der Firma");
-		String temp5 = sc.nextLine();
-
-		this.createFirma(temp, 5, temp2, temp3, temp4, temp5);
-	}
-
-	public void createScooter(Koordinaten poCurrentKoord, int piCurrentProzent, double pdCurrentEarn, int piCoveredKm,
-			boolean pbCurrentStatus) {
-		testScooter = new Scooter(poCurrentKoord, piCurrentProzent, pdCurrentEarn, piCoveredKm, pbCurrentStatus);
-	}
-
-	public void createScooterMethod() {
-		this.sc = new Scanner(System.in);
-		System.out.println("Aktueller Standort des Scooters");
-		//Koordinaten temp = sc.nextLine();
-
-		System.out.println("Aktueller Ladestand des Scooters");
-		int temp2 = sc.nextInt();
-
-		System.out.println("Wieviel Geld hat der Scooter produziert");
-		double temp3 = sc.nextDouble();
-
-		System.out.println("Zurückgelegte Kilometer");
-		int temp4 = sc.nextInt();
-
-		System.out.println("Aktueller Status");
-		boolean temp5 = sc.nextBoolean();
-
-		this.createScooter(null, temp2, temp3, temp4, temp5);
-	}
-
-	private void SetupMode() {
-		System.out.println("Hello World");
-		this.selMenu = "new company";
+	public void mainLoop() {
+		while (this.bRunning) {
+			showMenu();
+		}
 	}
 
 }

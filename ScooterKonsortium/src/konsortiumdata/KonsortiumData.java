@@ -1,37 +1,123 @@
 package konsortiumdata;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class KonsortiumData {
-	//noch nicht richtig (siehe Diagramm)
-	//private Firma oFirmen = new Firma();
+	
+	/*
+	 * HashMap saves companies so that no company can exist twice
+	 * Layout is:
+	 * 	NameOfCompany: String -> Firma object: Firma
+	 * 
+	 */
+	private HashMap<String, Firma> oFirmen = new HashMap<>();
 	
 	
+	/**
+	 * Pushes all the data to the database
+	 */
 	public void pushAllData() {
 		
 	}
-	
+
+	/**
+	 * Pushes all Companies to the database
+	 */
 	public void pushFirmen() {
 		
 	}
 	
+	/**
+	 * Pushes specified Firma to database
+	 * 
+	 * @param sNameFirma
+	 */
 	public void PushFirma(String sNameFirma) {
 		
 	}
 	
+	/**
+	 * Pushes all scooters of specified company to database
+	 * @param sNameFirma
+	 */
 	public void pushScooter(String sNameFirma) {
 		
 	}
 	
+	
+	/**
+	 * Pushes all Ladepunkte of specified company to database
+	 * @param sNameFirma
+	 */
 	public void pushLadepunkt(String sNameFirma) {
 		
 	}
 	
-	public Ladepunkt getLadepunkte(String sNameFrima) {
+	/**
+	 * Adds a new Firma to the internal Data Structure 
+	 * @param oFirma
+	 */
+	public void addFirma(Firma oFirma) {
+		this.oFirmen.put(oFirma.getName(), oFirma);
+	}
+	
+	/**
+	 * Adds a Scooter to the specified Company
+	 * @param sCompanyName
+	 * @param oScooter
+	 */
+	public void addScooter(String sCompanyName, Scooter oScooter) {
+		if(!this.oFirmen.containsKey(sCompanyName)) {
+			System.err.println("The scooter cannot be added to the company as the company does not exist");
+			return;
+		}
+		this.oFirmen.get(sCompanyName).putScooter(oScooter);
+		
+	}
+	
+	/**
+	 * Adds a Ladepunkt to the specified Company
+	 * @param sCompanyName
+	 * @param oLadepunkt
+	 */
+	public void addladepunkt(String sCompanyName, Ladepunkt oLadepunkt) {
+		if(!this.oFirmen.containsKey(sCompanyName)) {
+			System.err.println("The Ladepunkt cannot be added to the company as the company does not exist");
+			return;
+		}
+		this.oFirmen.get(sCompanyName).putLadepunkt(oLadepunkt);
+	}
+	
+	/**
+	 * retrieves the Firma from the array list
+	 * !! Uses the internal Data Structure 
+	 * @param sNameFrima
+	 * @return
+	 */
+	public Firma getFirma(String sNameFrima) {
 		return null;
 		
 	}
-	public Scooter getScooter(String sNameFirma) {
+	
+	/**
+	 * retrieves array of ladepunkte from the specified Firma
+	 * !! Uses the internal Data Structure 
+	 * @param sNameFrima
+	 * @return
+	 */
+	public Ladepunkt[] getLadepunkte(String sNameFrima) {
+		return null;
+		
+	}
+	
+	/**
+	 * retrieves array of scooters from the specified Firma
+	 * !! Uses the internal Data Structure 
+	 * @param sNameFirma
+	 * @return
+	 */
+	public Scooter[] getScooter(String sNameFirma) {
 		return null;
 	}
 	
