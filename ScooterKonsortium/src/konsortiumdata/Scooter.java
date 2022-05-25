@@ -8,6 +8,13 @@ public class Scooter extends MapObjekt {
 	private int iCoveredKm;
 	private boolean bCurrentStatus;
 	
+	public Scooter(Koordinaten poCurrentKoord, int piCurrentProzent, double pdCurrentEarn, int piCoveredKm, boolean pbCurrentStatus) {
+		this.oCurrentKoord = poCurrentKoord;
+		this.iCurrentProzent = piCurrentProzent;
+		this.dCurrentEarn = pdCurrentEarn;
+		this.iCoveredKm = piCoveredKm;
+		this.bCurrentStatus = pbCurrentStatus;
+	}
 	public Koordinaten getCurrentKoord() {
 		return oCurrentKoord;
 	}
