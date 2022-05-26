@@ -52,9 +52,9 @@ public class UserInterface {
 		 * Operative Mode
 		 * Macht nicht viel
 		 */
-		String[] entries2 = new String[] { "Go to Setup mode" };
-		char[] controls2 = new char[] { 'S' };
-		Runnable[] functions2 = new Runnable[] { () -> selMenu = "setup" };
+		String[] entries2 = new String[] { "Go to Setup mode", "Back" };
+		char[] controls2 = new char[] { 'S', 'B' };
+		Runnable[] functions2 = new Runnable[] { () -> selMenu = "setup", ()->selMenu="main"};
 		menus.createMenu("operative", this, entries2, controls2, functions2);
 		
 		
@@ -63,9 +63,9 @@ public class UserInterface {
 		 * erlaubt das erstellen von Elementen
 		 */
 		
-		String[] entries3 = new String[] { "Go to Operative Mode", "Create new company"};
-		char[] controls3 = new char[] { 'O', 'C' };
-		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->selMenu="new company"};
+		String[] entries3 = new String[] { "Go to Operative Mode", "Create new company", "Back"};
+		char[] controls3 = new char[] { 'O', 'C', 'B'};
+		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->selMenu="new company", ()->selMenu="main"};
 		menus.createMenu("setup", this, entries3, controls3, functions3);
 
 		/*
