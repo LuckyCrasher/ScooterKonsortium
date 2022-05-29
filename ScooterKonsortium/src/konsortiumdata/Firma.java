@@ -3,12 +3,12 @@ package konsortiumdata;
 import java.util.ArrayList;
 
 public class Firma {
-	private String sNameFirma;
-	private double dKostenJeFahrt;
-	private String sAdresse;
-	private int iPLZ;
-	private String sStadt;
-	private String sHotline;
+	private String sNameFirma = "null";
+	private double dKostenJeFahrt = 0.0;
+	private String sAdresse = "null";
+	private int iPLZ = 0;
+	private String sStadt = "null";
+	private String sHotline = "0";
 	
 	private ArrayList<Scooter> aoScooter = new ArrayList<>();
 	private ArrayList<Ladepunkt> aoLadepunkte = new ArrayList<>();
