@@ -111,7 +111,7 @@ public class UserInterface {
 		char[] controls5 = new char[] { 'N', 'K', 'C', 'U', 'B', 'S'};
 		Runnable[] functions5 = new Runnable[] {
 				()-> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
-				()-> this.selMenu="KoordinatenUntermenu",
+				()-> this.selMenu="KoordinatenUntermenuLadepunkt",
 				()-> this.tmpLadepunkt.setLadeCap(getUserIntInput("Ladepunkt Capacity")),
 				()-> this.tmpLadepunkt.setCurrentUse(getUserIntInput("Ladepunkt Usage")),
 				()-> this.selMenu="setup",
