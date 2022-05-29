@@ -118,20 +118,64 @@ public class UserInterface {
 		menus.createMenu("new Ladepunkt", this, entries5, controls5, functions5);
 		
 		/*
-		 * Koordinaten untermenü
+		 * Koordinaten untermenü Ladepunkt
 		 */
 		
 		String[] entries6 = new String[] {"Set KoordinatenX",
 				"Set KoordinatenY",
-				"Back (Abort)",};
+				"Back (Abort)"};
 		char[] controls6 = new char[] {'X', 'Y'};
 		Runnable[] functions6 = new Runnable[] {
 				()-> this.tmpLadepunkt.setx(getUserIntInput("Koordinaten X")),
 				()-> this.tmpLadepunkt.sety(getUserIntInput("Koordinaten Y")),
 				()-> this.selMenu="setup",
 		};
-		menus.createMenu("KoordinatenUntermenu", this, entries6, controls6, functions6);
+		menus.createMenu("KoordinatenUntermenuLadepunkt", this, entries6, controls6, functions6);
+		
+		/*
+		 * Create Scooter Menu
+		 * erlaubt es Werte für den neuen Scooter zu setzen
+		 */
+		
+		String[] entries7 = new String[] {"Set Koordinaten",
+				"Use Default Settings",
+				"Modify Settings"};
+		char[] controls7 = new char[] {'K', 'D', 'M'};
+		Runnable[] functions7 = new Runnable[] {
+			()-> this.tmpScooter.setCurrentKoord(null),
+			()-> this.selMenu="setup",
+			()-> this.selMenu="ScooterModify"
+		};
+		menus.createMenu("new Scooter", this, entries7, controls7, functions7);
+		
+		/*
+		 * Scooter Modify Settings Menu
+		 */
+		
+		String [] entries8 = new String[] {"Current Percent",
+			"Current Earnings",
+			"Covered Km",
+			"Current Loading Status",
+			"Back (Abort)",
+			"Save"
+		};
+		
+		char[] controls8 = new char[] {'P','E','K','L', 'B', 'S'};
+		Runnable[] functions8 = new Runnable[] { 
+				()-> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
+				()-> this.tmpScooter.setCurrentEarn(getUserDoubleInput("Current Earnings")),
+				()-> this.tmpScooter.setCoveredKm(getUserIntInput("Covered Km")),
+				()-> this.tmpScooter.setCurrentStatus(getUserBooleanInput("Current Loading Status")),
+				()-> this.selMenu="setup",
+				this::saveScooter
+		};
+		menus.createMenu("ScooterModify", this, entries8, controls8, functions8);
+		
 	}
+	
+	
+
+	
 	
 	private String getUserStringInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
@@ -143,6 +187,15 @@ public class UserInterface {
 		return sc.nextInt();
 	}
 	
+	private double getUserDoubleInput(String sPrompt) {
+		System.out.printf("%s ->", sPrompt);
+		return sc.nextDouble();
+	}
+	
+	private boolean getUserBooleanInput(String sPrompt) {
+		System.out.printf("%s ->", sPrompt);
+		return sc.nextBoolean();
+	}
 	
 	
 	public void showMenu() {
@@ -161,6 +214,14 @@ public class UserInterface {
 		this.oData.addladepunkt(this.tmpFirma.getName(),tmpLadepunkt);
 		this.tmpLadepunkt = null;
 		this.tmpLadepunkt = new Ladepunkt();
+		this.selMenu = "setup";
+	}
+	
+	private void saveScooter() {
+		System.out.println("Saving Scooter");
+		this.oData.addScooter(this.tmpFirma.getName(), tmpScooter);
+		this.tmpScooter = null;
+		this.tmpScooter = new Scooter();
 		this.selMenu = "setup";
 	}
 

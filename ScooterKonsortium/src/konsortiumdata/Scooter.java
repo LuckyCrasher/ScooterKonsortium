@@ -18,7 +18,7 @@ public class Scooter extends MapObjekt {
 	
 	public Scooter() {
 		this.oCurrentKoord = new Koordinaten();
-		this.iCurrentProzent = 0;
+		this.iCurrentProzent = 100;
 		this.dCurrentEarn = 0.0;
 		this.iCoveredKm = 0;
 		this.bCurrentStatus = false;

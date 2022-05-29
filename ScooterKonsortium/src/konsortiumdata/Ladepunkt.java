@@ -1,7 +1,7 @@
 package konsortiumdata;
 import mapping.*;
 
-public class Ladepunkt {
+public class Ladepunkt extends Koordinaten {
 	private String sNameLadepunkt = "null";
 	private Koordinaten oFixKoord = new Koordinaten();
 	private int iLadeCap = 0;
