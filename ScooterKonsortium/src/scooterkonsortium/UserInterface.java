@@ -21,6 +21,8 @@ public class UserInterface {
 	private Firma tmpFirma;
 	private Scooter tmpScooter;
 	private Ladepunkt tmpLadepunkt;
+	private int tmpX;
+	private int tmpY;
 	private boolean bRunning;
 	
 	public UserInterface(KonsortiumData oData) {
@@ -33,12 +35,12 @@ public class UserInterface {
 		this.tmpFirma = new Firma();
 		this.tmpScooter = new Scooter();
 		this.tmpLadepunkt = new Ladepunkt();
+		this.tmpX = 0;
+		this.tmpY = 0;
 		
 		createMenus();
 	}
-	public KonsortiumData getdata() {
-		return oData.toString();
-	}
+	
 
 	private void createMenus() {
 		/* 
@@ -49,7 +51,7 @@ public class UserInterface {
 		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Quit" };
 		char[] controls1 = new char[] { 'O', 'S', 'Q'};
 		Runnable[] functions1 = new Runnable[] { () -> selMenu = "operative", () -> selMenu = "setup", ()->this.bRunning=false};
-		menus.createMenu("main", this, entries1, controls1, functions1);
+		menus.createMenu("main", entries1, controls1, functions1);
 
 		/* 
 		 * Operative Mode
@@ -58,7 +60,7 @@ public class UserInterface {
 		String[] entries2 = new String[] { "Go to Setup mode", "Back" };
 		char[] controls2 = new char[] { 'S', 'B' };
 		Runnable[] functions2 = new Runnable[] { () -> selMenu = "setup", ()->selMenu="main"};
-		menus.createMenu("operative", this, entries2, controls2, functions2);
+		menus.createMenu("operative", entries2, controls2, functions2);
 		
 		
 		/*
@@ -68,8 +70,8 @@ public class UserInterface {
 		
 		String[] entries3 = new String[] { "Go to Operative Mode", "Create new company", "Create new Ladepunkt", "Back"};
 		char[] controls3 = new char[] { 'O', 'C', 'L', 'B'};
-		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->selMenu="new company", ()->selMenu="new Ladepunkt", ()->selMenu="main"};
-		menus.createMenu("setup", this, entries3, controls3, functions3);
+		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->{selMenu="new company";this.setShowData(this.tmpFirma);}, ()->selMenu="new Ladepunkt", ()->selMenu="main"};
+		menus.createMenu("setup", entries3, controls3, functions3);
 
 		/*
 		 * Create Firma Menu
@@ -93,11 +95,11 @@ public class UserInterface {
 				()->this.selMenu="setup",
 				this::saveCompany
 				};
-		menus.createMenu("new company", this, entries4, controls4, functions4);
+		menus.createMenu("new company", entries4, controls4, functions4);
 			
 		/*
 		 * Create Ladepunkt Menu
-		 * erlaubt es Werte für den neuen Ladepunkt zu setzen
+		 * erlaubt es Werte fï¿½r den neuen Ladepunkt zu setzen
 		 */
 		
 		String [] entries5 = new String[] {"Set name",
@@ -115,26 +117,26 @@ public class UserInterface {
 				()-> this.selMenu="setup",
 				this::saveLadepunkt
 				};
-		menus.createMenu("new Ladepunkt", this, entries5, controls5, functions5);
+		menus.createMenu("new Ladepunkt", entries5, controls5, functions5);
 		
 		/*
-		 * Koordinaten untermenü Ladepunkt
+		 * Koordinaten untermenï¿½ Ladepunkt
 		 */
 		
 		String[] entries6 = new String[] {"Set KoordinatenX",
 				"Set KoordinatenY",
 				"Back (Abort)"};
-		char[] controls6 = new char[] {'X', 'Y'};
+		char[] controls6 = new char[] {'X', 'Y', 'B'};
 		Runnable[] functions6 = new Runnable[] {
-				()-> this.tmpLadepunkt.setx(getUserIntInput("Koordinaten X")),
-				()-> this.tmpLadepunkt.sety(getUserIntInput("Koordinaten Y")),
-				()-> this.selMenu="setup",
+				()-> this.tmpX = getUserIntInput("Koordinaten X"),
+				()-> this.tmpY = getUserIntInput("Koordinaten Y"),
+				()-> this.selMenu="setup"
 		};
-		menus.createMenu("KoordinatenUntermenuLadepunkt", this, entries6, controls6, functions6);
+		menus.createMenu("KoordinatenUntermenuLadepunkt", entries6, controls6, functions6);
 		
 		/*
 		 * Create Scooter Menu
-		 * erlaubt es Werte für den neuen Scooter zu setzen
+		 * erlaubt es Werte fï¿½r den neuen Scooter zu setzen
 		 */
 		
 		String[] entries7 = new String[] {"Set Koordinaten",
@@ -146,7 +148,7 @@ public class UserInterface {
 			()-> this.selMenu="setup",
 			()-> this.selMenu="ScooterModify"
 		};
-		menus.createMenu("new Scooter", this, entries7, controls7, functions7);
+		menus.createMenu("new Scooter", entries7, controls7, functions7);
 		
 		/*
 		 * Scooter Modify Settings Menu
@@ -169,13 +171,8 @@ public class UserInterface {
 				()-> this.selMenu="setup",
 				this::saveScooter
 		};
-		menus.createMenu("ScooterModify", this, entries8, controls8, functions8);
-		
+		menus.createMenu("KoordinatenUntermenu", entries8, controls8, functions8);
 	}
-	
-	
-
-	
 	
 	private String getUserStringInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
@@ -187,6 +184,7 @@ public class UserInterface {
 		return sc.nextInt();
 	}
 	
+
 	private double getUserDoubleInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
 		return sc.nextDouble();
@@ -197,7 +195,6 @@ public class UserInterface {
 		return sc.nextBoolean();
 	}
 	
-	
 	public void showMenu() {
 		menus.drawUserInterface(selMenu);
 	}
@@ -207,13 +204,19 @@ public class UserInterface {
 		this.oData.addFirma(tmpFirma);
 		this.tmpFirma = null;
 		this.tmpFirma = new Firma();
+		this.setShowData(null);
 		this.selMenu = "setup";
 	}
 	private void saveLadepunkt() {
 		System.out.println("Saving Ladepunkt");
+		this.tmpLadepunkt.x = this.tmpX;
+		this.tmpLadepunkt.y = this.tmpY;
+		this.tmpX = 0;
+		this.tmpY = 0;
 		this.oData.addladepunkt(this.tmpFirma.getName(),tmpLadepunkt);
 		this.tmpLadepunkt = null;
 		this.tmpLadepunkt = new Ladepunkt();
+		this.setShowData(null);
 		this.selMenu = "setup";
 	}
 	
@@ -230,5 +233,9 @@ public class UserInterface {
 			showMenu();
 		}
 	}
-
+	
+	public void setShowData(Object oShowData) {
+		this.menus.setShowData(oShowData);
+	}
+	
 }

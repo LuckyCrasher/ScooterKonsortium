@@ -1,22 +1,19 @@
 package konsortiumdata;
 import mapping.*;
 
-public class Ladepunkt extends Koordinaten {
+public class Ladepunkt extends MapObjekt {
 	private String sNameLadepunkt = "null";
-	private Koordinaten oFixKoord = new Koordinaten();
 	private int iLadeCap = 0;
 	private int iCurrentUse = 0;
 	
 	public Ladepunkt(String psNameLadepunkt, Koordinaten poFixKoord, int piLadeCap, int piCurrentUse) {
 		this.sNameLadepunkt = psNameLadepunkt;
-		this.oFixKoord = poFixKoord;
 		this.iLadeCap = piLadeCap;
 		this.iCurrentUse = piCurrentUse;
 	}
 	
 	public Ladepunkt() {
 		this.sNameLadepunkt = "";
-		this.oFixKoord = new Koordinaten();
 		this.iLadeCap = 0;
 		this.iCurrentUse = 0;
 	}
@@ -28,15 +25,6 @@ public class Ladepunkt extends Koordinaten {
 	public void setNameLadepunkt(String psNameLadepunkt) {
 		this.sNameLadepunkt = psNameLadepunkt;
 	}
-	
-	public Koordinaten getFixKoord() {
-		return oFixKoord;
-	}
-	
-	public void setFixKoord(Koordinaten poFixKoord) {
-		this.oFixKoord = poFixKoord;
-	}
-	
 	
 	public int getLadeCap() {
 		return iLadeCap;

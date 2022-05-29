@@ -1,5 +1,6 @@
 package scooterkonsortium;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -7,9 +8,12 @@ public class Menus {
 	private HashMap<String, Menu> menus = new HashMap<>();
 	private int width = 10;
 	
+	private Object showObject;
+	
 	private Scanner sc;
 	
 	public Menus(Scanner sc) {
+		this.showObject = null;
 		this.sc = new Scanner(System.in);
 	}
 	
@@ -24,6 +28,14 @@ public class Menus {
 		
 		StringBuilder sb = new StringBuilder();
 		String menuTitle = this.createTitle(menuName);
+		String[] sData = getData();
+		if(this.showObject != null) {
+			int t = 0;
+			for(String s : sData) {
+				t = Math.max(s.length(), t);
+			}
+			this.width = Math.max(t, this.width);
+		}
 		
 		sb.append("+");
 		for (int i=0;i<this.width+6;i++) sb.append("-");
@@ -32,15 +44,17 @@ public class Menus {
 
 		String line;
 		
-		for (String dataLine : m.getMenuData(width)) {
-			line = String.format("| %s |%n", dataLine);
-			sb.append(line);
-		}
-		if(m.hasData() ) {
+		if(this.showObject != null) {
+			for (String dataLine : sData) {
+				line = String.format("| %-" + (width + 4) + "s |%n", dataLine);
+				sb.append(line);
+			}
+			
 			sb.append("+");
 			for (int i=0;i<this.width+6;i++) sb.append("-");
 			sb.append("+\n");
 		}
+		
 		for (String menuLine : m.getMenu(width)) {
 			line = String.format("| %s |%n", menuLine);
 			sb.append(line);
@@ -54,27 +68,41 @@ public class Menus {
 		m.waitForAction(this.sc);
 	}
 	
-	public void createMenu(String name, UserInterface ui, String[] entries, char[] controls, Runnable[] functions) {
+	private String[] getData() {
+		if(this.showObject == null) return null;
+		ArrayList<String> lines = new ArrayList<>(); 
+		
+		this.showObject.toString().lines().forEach((l)-> lines.add(l));
+		
+		String out[] = new String[lines.size()];
+		return lines.toArray(out);
+	}
+	
+	public void createMenu(String name, String[] entries, char[] controls, Runnable[] functions) {
 		if (!(entries.length == controls.length && controls.length == functions.length)) {
-			System.err.println("The menu is inconsistant! Some rows are missing a function, controls or an entiry");
+			System.err.printf("The %s menu is inconsistant! Some rows are missing a function, controls or an entiry%n", name);
 		}
 		
-		Menu oM = new Menu(ui, entries, controls, functions);
+		Menu oM = new Menu(entries, controls, functions);
 		menus.put(name, oM);
 		this.width = Math.max(this.width, Math.max(oM.getWidth(), createTitle(name).length()));
 	}
 	
-	public void createMenu(String name, UserInterface ui, String[] entries, char[] controls, Runnable[] functions, String toolTip) {
+	public void createMenu(String name, String[] entries, char[] controls, Runnable[] functions, String toolTip) {
 		if (!(entries.length == controls.length && controls.length == functions.length)) {
-			System.err.println("The menu is inconsistant! Some rows are missing a function, controls or an entiry");
+			System.err.printf("The %s menu is inconsistant! Some rows are missing a function, controls or an entiry%n", name);
 		}
 		
-		Menu oM = new Menu(ui, entries, controls, functions, toolTip);
+		Menu oM = new Menu(entries, controls, functions, toolTip);
 		menus.put(name, oM);
 		this.width = Math.max(this.width, Math.max(oM.getWidth(), createTitle(name).length()));
 	}
 	
 	private String createTitle(String menuName) {
 		return String.format("+ %s menu +", menuName);
+	}
+
+	public void setShowData(Object oShowData) {
+		this.showObject = oShowData;	
 	}
 }
