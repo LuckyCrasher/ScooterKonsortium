@@ -3,7 +3,6 @@ package mapping;
 public class Koordinaten {
 	public int x;
 	public int y;
-	int Array [] = new int[1];
 	
 	public Koordinaten(int px, int py) {
 		this.x = px;
@@ -15,7 +14,7 @@ public class Koordinaten {
 	}
 	
 	public void setx(int px) {
-		Array[0] = px;
+		this.x = px;
 	}
 	
 	public int getx() {
@@ -23,7 +22,7 @@ public class Koordinaten {
 	}
 	
 	public void sety(int py) {
-		Array[1] = py;
+		this.y = py;
 	}
 	
 	public int gety() {
@@ -34,7 +33,7 @@ public class Koordinaten {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(String.format("X : %s%n", this.x));
-		sb.append(String.format("Y: %s%n", this.y));
+		sb.append(String.format("Y : %s%n", this.y));
 		
 		return sb.toString();
 	}
