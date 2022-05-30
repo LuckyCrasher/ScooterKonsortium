@@ -29,4 +29,13 @@ public class Koordinaten {
 	public int gety() {
 		return y;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(String.format("X : %s%n", this.x));
+		sb.append(String.format("Y: %s%n", this.y));
+		
+		return sb.toString();
+	}
 }

@@ -2,6 +2,7 @@ package scooterkonsortium;
 
 import java.util.Scanner;
 import java.util.Stack;
+import mapping.*;
 
 import konsortiumdata.*;
 import mapping.*;
@@ -22,8 +23,7 @@ public class UserInterface {
 	private Firma tmpFirma;
 	private Scooter tmpScooter;
 	private Ladepunkt tmpLadepunkt;
-	private int tmpX;
-	private int tmpY;
+	private Koordinaten tmpKoord;
 	private boolean bRunning;
 	
 	public UserInterface(KonsortiumData oData) {
@@ -37,8 +37,7 @@ public class UserInterface {
 		this.tmpFirma = new Firma();
 		this.tmpScooter = new Scooter();
 		this.tmpLadepunkt = new Ladepunkt();
-		this.tmpX = 0;
-		this.tmpY = 0;
+		this.tmpKoord = new Koordinaten();
 		
 		createMenus();
 		selMenu.add("main");
@@ -124,7 +123,7 @@ public class UserInterface {
 		char[] controls5 = new char[] { 'N', 'K', 'C', 'U', 'F', 'B', 'S'};
 		Runnable[] functions5 = new Runnable[] {
 				()-> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
-				()-> this.selMenu.push("KoordinatenUntermenu"),
+				()-> {this.selMenu.push("KoordinatenUntermenu");this.setShowData(this.tmpKoord);},
 				()-> this.tmpLadepunkt.setLadeCap(getUserIntInput("Ladepunkt Capacity")),
 				()-> this.tmpLadepunkt.setCurrentUse(getUserIntInput("Ladepunkt Usage")),
 				()-> this.tmpLadepunkt.setOwnedBy(getUserStringInput("Owned by")),
@@ -151,7 +150,7 @@ public class UserInterface {
 				"Save"};
 		char[] controls7 = new char[] {'K', 'P', 'E', 'M', 'L', 'F', 'B', 'S'};
 		Runnable[] functions7 = new Runnable[] {
-				()-> this.selMenu.push("KoordinatenUntermenu"),
+				()-> {this.selMenu.push("KoordinatenUntermenu");this.setShowData(this.tmpKoord);},
 				()-> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
 				()-> this.tmpScooter.setCurrentEarn(getUserDoubleInput("Current Earnings")),
 				()-> this.tmpScooter.setCoveredKm(getUserIntInput("Covered Km")),
@@ -171,13 +170,25 @@ public class UserInterface {
 				"Back (Abort)"};
 		char[] controls6 = new char[] {'X', 'Y', 'B'};
 		Runnable[] functions6 = new Runnable[] {
-				()-> this.tmpX = getUserIntInput("Koordinaten X"),
-				()-> this.tmpY = getUserIntInput("Koordinaten Y"),
-				()-> this.selMenu.pop()
+				()-> this.tmpKoord.setx(getUserIntInput("Koordinaten X")),
+				()-> this.tmpKoord.sety(getUserIntInput("Koordinaten Y")),
+				()-> this.leaveKoordMenu()
 		};
 		menus.createMenu("KoordinatenUntermenu", entries6, controls6, functions6);
 	
 	
+	}
+	
+	private void leaveKoordMenu() {
+		this.selMenu.pop();
+		this.tmpLadepunkt.x = this.tmpKoord.getx();
+		this.tmpLadepunkt.y = this.tmpKoord.gety();
+		
+		this.tmpScooter.x = this.tmpKoord.getx(); 
+		this.tmpScooter.x = this.tmpKoord.gety();
+		this.tmpKoord.setx(0);
+		this.tmpKoord.sety(0);
+		
 	}
 	
 	private String getUserStringInput(String sPrompt) {
@@ -187,18 +198,24 @@ public class UserInterface {
 	
 	private int getUserIntInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
-		return sc.nextInt();
+		int i= sc.nextInt();
+		sc.nextLine();
+		return i;
 	}
 	
 
 	private double getUserDoubleInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
-		return sc.nextDouble();
+		double d = sc.nextDouble();
+		sc.nextLine();
+		return d;
 	}
 	
 	private boolean getUserBooleanInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
-		return sc.nextBoolean();
+		boolean b = sc.nextBoolean();
+		sc.nextLine();
+		return b;
 	}
 	
 	public void showMenu() {
@@ -220,10 +237,7 @@ public class UserInterface {
 			return;
 		}
 		
-		this.tmpLadepunkt.x = this.tmpX;
-		this.tmpLadepunkt.y = this.tmpY;
-		this.tmpX = 0;
-		this.tmpY = 0;
+
 		this.oData.addladepunkt(this.tmpLadepunkt.getFirmaOwning(),tmpLadepunkt);
 		this.tmpLadepunkt = null;
 		this.tmpLadepunkt = new Ladepunkt();
