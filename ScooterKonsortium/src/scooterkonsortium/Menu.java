@@ -3,8 +3,6 @@ package scooterkonsortium;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import konsortiumdata.KonsortiumData;
-
 public class Menu {
 	
 	private String[] entries;

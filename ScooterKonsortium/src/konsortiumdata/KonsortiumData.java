@@ -89,6 +89,11 @@ public class KonsortiumData {
 		this.oFirmen.get(sCompanyName).putLadepunkt(oLadepunkt);
 	}
 	
+	public String[] getFirmaNames() {
+		String out[] = new String[oFirmen.size()];
+		return this.oFirmen.keySet().toArray(out);
+	}
+	
 	/**
 	 * retrieves the Firma from the array list
 	 * !! Uses the internal Data Structure 
@@ -96,7 +101,7 @@ public class KonsortiumData {
 	 * @return
 	 */
 	public Firma getFirma(String sNameFrima) {
-		return null;
+		return this.oFirmen.get(sNameFrima);
 		
 	}
 	
@@ -119,6 +124,10 @@ public class KonsortiumData {
 	 */
 	public Scooter[] getScooter(String sNameFirma) {
 		return null;
+	}
+
+	public boolean containsCompany(String sFirmenName) {
+		return this.oFirmen.containsKey(sFirmenName);
 	}
 	
 }

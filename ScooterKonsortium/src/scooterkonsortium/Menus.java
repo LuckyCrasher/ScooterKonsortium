@@ -1,5 +1,10 @@
 package scooterkonsortium;
 
+import konsortiumdata.Firma;
+import konsortiumdata.KonsortiumData;
+import konsortiumdata.Ladepunkt;
+import konsortiumdata.Scooter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -9,11 +14,13 @@ public class Menus {
 	private int width = 10;
 	
 	private Object showObject;
+	private KonsortiumData oData;
 	
 	private Scanner sc;
 	
-	public Menus(Scanner sc) {
+	public Menus(KonsortiumData oData, Scanner sc) {
 		this.showObject = null;
+		this.oData = oData;
 		this.sc = new Scanner(System.in);
 	}
 	
@@ -23,29 +30,62 @@ public class Menus {
 			return;
 		}
 		
+		//grab current menu
 		Menu m = menus.get(menuName);
 		
-		
+		//construct necessary elements
 		StringBuilder sb = new StringBuilder();
 		String menuTitle = this.createTitle(menuName);
-		String[] sData = getData();
+		// Data of Companies Scooters and Ladepunkte already stored in the program
+		String[] asData = this.getKonsortiumData();
+		// Data to be show to the user above the menu to visualize menu entries
+		String[] sShowData = getShowData();
+		
+		
+		
+		
+		//Recalculate new width of data to be shown
 		if(this.showObject != null) {
 			int t = 0;
-			for(String s : sData) {
+			for(String s : sShowData) {
+				t = Math.max(s.length(), t);
+				}
+			this.width = Math.max(t, this.width);
+		}
+		
+		//Recalculate new width of data to be shown
+		if(asData.length>0) {
+			int t = 0;
+			for(String s : asData) {
 				t = Math.max(s.length(), t);
 			}
 			this.width = Math.max(t, this.width);
 		}
 		
+		
+		//Draw top Line
 		sb.append("+");
 		for (int i=0;i<this.width+6;i++) sb.append("-");
 		sb.append("+\n");
 		sb.replace(4,menuTitle.length()+4, menuTitle);
 
+		
 		String line;
 		
+		//Draw KosnortiumData as List
+		if(asData.length>0) {
+			for (String dataLine : asData) {
+				line = String.format("| %-" + (width + 4) + "s |%n", dataLine);
+				sb.append(line);
+			}
+			sb.append("+");
+			for (int i=0;i<this.width+6;i++) sb.append("-");
+			sb.append("+\n");
+		}
+		
+		//Draw Data to be shown
 		if(this.showObject != null) {
-			for (String dataLine : sData) {
+			for (String dataLine : sShowData) {
 				line = String.format("| %-" + (width + 4) + "s |%n", dataLine);
 				sb.append(line);
 			}
@@ -55,6 +95,7 @@ public class Menus {
 			sb.append("+\n");
 		}
 		
+		//Draw Menu
 		for (String menuLine : m.getMenu(width)) {
 			line = String.format("| %s |%n", menuLine);
 			sb.append(line);
@@ -68,7 +109,69 @@ public class Menus {
 		m.waitForAction(this.sc);
 	}
 	
-	private String[] getData() {
+	private String[] getKonsortiumData() {
+		ArrayList<String> lines = new ArrayList<>(); 
+		
+		String[] asFirmenNames = oData.getFirmaNames();
+		ArrayList<Firma> alFirmen = new ArrayList<Firma>();
+		for(String key : asFirmenNames) {
+			alFirmen.add(this.oData.getFirma(key));
+		}
+		
+		// go through all companies
+		Scooter[] scooters;
+		Ladepunkt[] ladepunkte;
+		
+		// Iterate through all Companies
+		for(int iFirma=0;iFirma<alFirmen.size();iFirma++) {
+			lines.add(String.format("+---%s", alFirmen.get(iFirma).getName()));
+			
+			// Normal loop
+			if(iFirma != alFirmen.size()-1) {
+				// All scooters of company
+				scooters = alFirmen.get(iFirma).getScooters();
+				
+				// Iterate through every Scooter
+				lines.add("|   +---Scooters");
+				for(int iScooter=0;iScooter<scooters.length;iScooter++) {
+					lines.add(String.format("|   |   +---Scooter at %d %d", scooters[iScooter].x, scooters[iScooter].y));
+				}
+				
+				ladepunkte = alFirmen.get(iFirma).getladepunkte();
+				// Iterate through every Ladepunkt
+				lines.add("|   +---Ladepunkte");
+				for(int iLadepunkt=0;iLadepunkt<ladepunkte.length;iLadepunkt++) {
+					lines.add(String.format("|       +---%s at %d %d", ladepunkte[iLadepunkt].getNameLadepunkt(), ladepunkte[iLadepunkt].x, ladepunkte[iLadepunkt].y));
+				}
+
+			} else { // Only on last element
+				// All scooters of company
+				scooters = alFirmen.get(iFirma).getScooters();
+				
+				// Iterate through every Scooter
+				lines.add("    +---Scooters");
+				for(int iScooter=0;iScooter<scooters.length;iScooter++) {
+					lines.add(String.format("    |   +---Scooter at %d %d", scooters[iScooter].x, scooters[iScooter].y));
+				}
+				
+				ladepunkte = alFirmen.get(iFirma).getladepunkte();
+				// Iterate through every Ladepunkt
+				lines.add("    +---Ladepunkte");
+				for(int iLadepunkt=0;iLadepunkt<ladepunkte.length;iLadepunkt++) {
+					lines.add(String.format("        +---%s at %d %d", ladepunkte[iLadepunkt].getNameLadepunkt(), ladepunkte[iLadepunkt].x, ladepunkte[iLadepunkt].y));
+				}
+			}
+			
+			
+		}
+		
+		
+		String out[] = new String[lines.size()];
+		return lines.toArray(out);
+	}
+	
+	
+	private String[] getShowData() {
 		if(this.showObject == null) return null;
 		ArrayList<String> lines = new ArrayList<>(); 
 		

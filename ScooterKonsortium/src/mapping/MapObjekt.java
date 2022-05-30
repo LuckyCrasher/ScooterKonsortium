@@ -2,8 +2,8 @@ package mapping;
 
 public class MapObjekt extends Koordinaten {
 	
-	public void render() {
-		
+	public String render() {
+		return " ";
 	}
 	
 }

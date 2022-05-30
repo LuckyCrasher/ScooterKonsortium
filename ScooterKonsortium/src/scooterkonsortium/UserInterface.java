@@ -1,17 +1,18 @@
 package scooterkonsortium;
 
 import java.util.Scanner;
+import java.util.Stack;
 
 import konsortiumdata.*;
 import mapping.*;
 
 public class UserInterface {
-	private Map oMap = new Map();
+	private Map oMap;
 	private KonsortiumData oData;
 	
 	private Menus menus;
 	private Scanner sc;
-	private String selMenu = "main";
+	private Stack<String> selMenu = new Stack<>();
 
 	/*
 	 *  create temporary objects
@@ -27,9 +28,10 @@ public class UserInterface {
 	
 	public UserInterface(KonsortiumData oData) {
 		this.oData = oData;
+		this.oMap = new Map(oData, 10, 10);
 		
 		this.sc = new Scanner(System.in);
-		this.menus = new Menus(sc);
+		this.menus = new Menus(oData, sc);
 		this.bRunning = true;
 		
 		this.tmpFirma = new Firma();
@@ -39,6 +41,7 @@ public class UserInterface {
 		this.tmpY = 0;
 		
 		createMenus();
+		selMenu.add("main");
 	}
 	
 
@@ -50,16 +53,21 @@ public class UserInterface {
 		
 		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Quit" };
 		char[] controls1 = new char[] { 'O', 'S', 'Q'};
-		Runnable[] functions1 = new Runnable[] { () -> selMenu = "operative", () -> selMenu = "setup", ()->this.bRunning=false};
+		Runnable[] functions1 = new Runnable[] {
+				() -> selMenu.push("operative"),
+				() -> selMenu.push("setup"),
+				()->this.bRunning=false};
 		menus.createMenu("main", entries1, controls1, functions1);
 
 		/* 
 		 * Operative Mode
 		 * Macht nicht viel
 		 */
-		String[] entries2 = new String[] { "Go to Setup mode", "Back" };
-		char[] controls2 = new char[] { 'S', 'B' };
-		Runnable[] functions2 = new Runnable[] { () -> selMenu = "setup", ()->selMenu="main"};
+		String[] entries2 = new String[] {"Show Map", "Back" };
+		char[] controls2 = new char[] {'M', 'B' };
+		Runnable[] functions2 = new Runnable[] {
+				()->this.setShowData(this.oMap),
+				()->selMenu.pop()};
 		menus.createMenu("operative", entries2, controls2, functions2);
 		
 		
@@ -68,9 +76,13 @@ public class UserInterface {
 		 * erlaubt das erstellen von Elementen
 		 */
 		
-		String[] entries3 = new String[] { "Go to Operative Mode", "Create new company", "Create new Ladepunkt", "Back"};
-		char[] controls3 = new char[] { 'O', 'C', 'L', 'B'};
-		Runnable[] functions3 = new Runnable[] {()->this.selMenu="operative", ()->{selMenu="new company";this.setShowData(this.tmpFirma);}, ()->selMenu="new Ladepunkt", ()->selMenu="main"};
+		String[] entries3 = new String[] {"Create new company", "Create new Ladepunkt", "Create new Scooter", "Back"};
+		char[] controls3 = new char[] {'C', 'L', 'S', 'B'};
+		Runnable[] functions3 = new Runnable[] {
+				()->{selMenu.push("new company");this.setShowData(this.tmpFirma);},
+				()->{selMenu.push("new Ladepunkt");this.setShowData(this.tmpLadepunkt);},
+				()->{selMenu.push("new Scooter");this.setShowData(this.tmpScooter);},
+				()->selMenu.pop()};
 		menus.createMenu("setup", entries3, controls3, functions3);
 
 		/*
@@ -92,7 +104,7 @@ public class UserInterface {
 				()->this.tmpFirma.setPLZ(this.getUserIntInput("Company post code")),
 				()->this.tmpFirma.setStadt(this.getUserStringInput("Company city")),
 				()->this.tmpFirma.setHotline(this.getUserStringInput("Company hotline")),
-				()->this.selMenu="setup",
+				()->this.selMenu.pop(),
 				this::saveCompany
 				};
 		menus.createMenu("new company", entries4, controls4, functions4);
@@ -106,21 +118,52 @@ public class UserInterface {
 				"Set Koordinaten",
 				"Set Lade Capacity",
 				"Set Current Usage",
+				"Set company owing",
 				"Back (Abort)",
 				"Save"};
-		char[] controls5 = new char[] { 'N', 'K', 'C', 'U', 'B', 'S'};
+		char[] controls5 = new char[] { 'N', 'K', 'C', 'U', 'F', 'B', 'S'};
 		Runnable[] functions5 = new Runnable[] {
 				()-> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
-				()-> this.selMenu="KoordinatenUntermenuLadepunkt",
+				()-> this.selMenu.push("KoordinatenUntermenu"),
 				()-> this.tmpLadepunkt.setLadeCap(getUserIntInput("Ladepunkt Capacity")),
 				()-> this.tmpLadepunkt.setCurrentUse(getUserIntInput("Ladepunkt Usage")),
-				()-> this.selMenu="setup",
+				()-> this.tmpLadepunkt.setOwnedBy(getUserStringInput("Owned by")),
+				()-> this.selMenu.pop(),
 				this::saveLadepunkt
 				};
 		menus.createMenu("new Ladepunkt", entries5, controls5, functions5);
 		
+		
+		
 		/*
-		 * Koordinaten untermen� Ladepunkt
+		 * Create Scooter Menu
+		 * erlaubt es Werte f�r den neuen Scooter zu setzen
+		 */
+		
+		String[] entries7 = new String[] {
+				"Set Koordinaten",
+				"Set current Prozent",
+				"Set current Earnings",
+				"Set covered Kilometers",
+				"Set current status",
+				"Set Firma owning",
+				"Back (Abort)",
+				"Save"};
+		char[] controls7 = new char[] {'K', 'P', 'E', 'M', 'L', 'F', 'B', 'S'};
+		Runnable[] functions7 = new Runnable[] {
+				()-> this.selMenu.push("KoordinatenUntermenu"),
+				()-> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
+				()-> this.tmpScooter.setCurrentEarn(getUserDoubleInput("Current Earnings")),
+				()-> this.tmpScooter.setCoveredKm(getUserIntInput("Covered Km")),
+				()-> this.tmpScooter.setCurrentStatus(getUserBooleanInput("Current Loading Status")),
+				()-> this.tmpScooter.setOwnedBy(getUserStringInput("Owned by")),
+				()-> this.selMenu.pop(),
+				this::saveScooter
+		};
+		menus.createMenu("new Scooter", entries7, controls7, functions7);
+		
+		/*
+		 * Koordinaten untermenue
 		 */
 		
 		String[] entries6 = new String[] {"Set KoordinatenX",
@@ -130,48 +173,11 @@ public class UserInterface {
 		Runnable[] functions6 = new Runnable[] {
 				()-> this.tmpX = getUserIntInput("Koordinaten X"),
 				()-> this.tmpY = getUserIntInput("Koordinaten Y"),
-				()-> this.selMenu="setup"
+				()-> this.selMenu.pop()
 		};
-		menus.createMenu("KoordinatenUntermenuLadepunkt", entries6, controls6, functions6);
-		
-		/*
-		 * Create Scooter Menu
-		 * erlaubt es Werte f�r den neuen Scooter zu setzen
-		 */
-		
-		String[] entries7 = new String[] {"Set Koordinaten",
-				"Use Default Settings",
-				"Modify Settings"};
-		char[] controls7 = new char[] {'K', 'D', 'M'};
-		Runnable[] functions7 = new Runnable[] {
-			()-> this.tmpScooter.setCurrentKoord(null),
-			()-> this.selMenu="setup",
-			()-> this.selMenu="ScooterModify"
-		};
-		menus.createMenu("new Scooter", entries7, controls7, functions7);
-		
-		/*
-		 * Scooter Modify Settings Menu
-		 */
-		
-		String [] entries8 = new String[] {"Current Percent",
-			"Current Earnings",
-			"Covered Km",
-			"Current Loading Status",
-			"Back (Abort)",
-			"Save"
-		};
-		
-		char[] controls8 = new char[] {'P','E','K','L', 'B', 'S'};
-		Runnable[] functions8 = new Runnable[] { 
-				()-> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
-				()-> this.tmpScooter.setCurrentEarn(getUserDoubleInput("Current Earnings")),
-				()-> this.tmpScooter.setCoveredKm(getUserIntInput("Covered Km")),
-				()-> this.tmpScooter.setCurrentStatus(getUserBooleanInput("Current Loading Status")),
-				()-> this.selMenu="setup",
-				this::saveScooter
-		};
-		menus.createMenu("KoordinatenUntermenu", entries8, controls8, functions8);
+		menus.createMenu("KoordinatenUntermenu", entries6, controls6, functions6);
+	
+	
 	}
 	
 	private String getUserStringInput(String sPrompt) {
@@ -196,7 +202,7 @@ public class UserInterface {
 	}
 	
 	public void showMenu() {
-		menus.drawUserInterface(selMenu);
+		menus.drawUserInterface(selMenu.peek());
 	}
 	
 	private void saveCompany() {
@@ -205,27 +211,36 @@ public class UserInterface {
 		this.tmpFirma = null;
 		this.tmpFirma = new Firma();
 		this.setShowData(null);
-		this.selMenu = "setup";
+		this.selMenu.pop();
 	}
 	private void saveLadepunkt() {
 		System.out.println("Saving Ladepunkt");
+		if(!this.oData.containsCompany(this.tmpLadepunkt.getFirmaOwning())) {
+			System.err.println("Can not add Ladepunkt to company! The company does not exist.");
+			return;
+		}
+		
 		this.tmpLadepunkt.x = this.tmpX;
 		this.tmpLadepunkt.y = this.tmpY;
 		this.tmpX = 0;
 		this.tmpY = 0;
-		this.oData.addladepunkt(this.tmpFirma.getName(),tmpLadepunkt);
+		this.oData.addladepunkt(this.tmpLadepunkt.getFirmaOwning(),tmpLadepunkt);
 		this.tmpLadepunkt = null;
 		this.tmpLadepunkt = new Ladepunkt();
 		this.setShowData(null);
-		this.selMenu = "setup";
+		this.selMenu.pop();
 	}
 	
 	private void saveScooter() {
 		System.out.println("Saving Scooter");
-		this.oData.addScooter(this.tmpFirma.getName(), tmpScooter);
+		if(!this.oData.containsCompany(this.tmpScooter.getFirmaOwning())) {
+			System.err.println("Can not add scooter to company! The company does not exist.");
+			return;
+		}
+		this.oData.addScooter(this.tmpScooter.getFirmaOwning(), tmpScooter);
 		this.tmpScooter = null;
 		this.tmpScooter = new Scooter();
-		this.selMenu = "setup";
+		this.selMenu.pop();
 	}
 
 	public void mainLoop() {

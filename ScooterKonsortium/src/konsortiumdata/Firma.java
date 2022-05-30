@@ -95,6 +95,16 @@ public class Firma {
 		this.aoLadepunkte.add(oLadepunkt);
 	}
 	
+	public Scooter[] getScooters() {
+		Scooter out[] = new Scooter[this.aoScooter.size()];
+		return this.aoScooter.toArray(out);
+	}
+	
+	public Ladepunkt[] getladepunkte() {
+		Ladepunkt out[] = new Ladepunkt[this.aoLadepunkte.size()];
+		return this.aoLadepunkte.toArray(out);
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		

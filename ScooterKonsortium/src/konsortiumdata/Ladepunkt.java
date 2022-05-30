@@ -5,11 +5,14 @@ public class Ladepunkt extends MapObjekt {
 	private String sNameLadepunkt = "null";
 	private int iLadeCap = 0;
 	private int iCurrentUse = 0;
+	private String sFirmaOwning;
 	
-	public Ladepunkt(String psNameLadepunkt, Koordinaten poFixKoord, int piLadeCap, int piCurrentUse) {
+	public Ladepunkt(String psNameLadepunkt, int x, int y, int piLadeCap, int piCurrentUse, String sFirmaOwning) {
+		super();
 		this.sNameLadepunkt = psNameLadepunkt;
 		this.iLadeCap = piLadeCap;
 		this.iCurrentUse = piCurrentUse;
+		this.sFirmaOwning = sFirmaOwning;
 	}
 	
 	public Ladepunkt() {
@@ -40,5 +43,29 @@ public class Ladepunkt extends MapObjekt {
 	
 	public void setCurrentUse(int piCurrentUse) {
 		this.iCurrentUse = piCurrentUse;
+	}
+	
+	public String render() {
+		return "L";
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(String.format("Name: %s%n", this.sNameLadepunkt));
+		sb.append(String.format("Costs: %s%n", this.iCurrentUse));
+		sb.append(String.format("Address: %s%n", this.iLadeCap));
+		sb.append(String.format("Location: %d %d%n", this.x, this.y));
+		sb.append(String.format("Name of company: %s%n", this.sFirmaOwning));
+
+		return sb.toString();
+	}
+
+	public void setOwnedBy(String sFirmaOwning) {
+		this.sFirmaOwning = sFirmaOwning;
+	}
+
+	public String getFirmaOwning() {
+		return this.sFirmaOwning;
 	}
 }
