@@ -62,6 +62,20 @@ public class KonsortiumData {
 		this.oFirmen.put(oFirma.getName(), oFirma);
 	}
 	
+	public void deleteFirma(String sNameFirma) {
+		this.oFirmen.remove(sNameFirma);
+		if (this.oFirmen.remove(sNameFirma) == null) {
+			System.err.printf("This Company cannot be deleted as the company does not exist");
+		}
+	}
+	
+	public void deleteLadepunkt(String Ladepunkt) {
+	
+	}
+	
+	public void deleteScooter() {
+		
+	}
 	/**
 	 * Adds a Scooter to the specified Company
 	 * @param sCompanyName
