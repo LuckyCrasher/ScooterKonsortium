@@ -61,12 +61,16 @@ public class UserInterface {
 		/*
 		 * Operative Mode Macht nicht viel
 		 */
-		String[] entries2 = new String[] { "Show Map", "Select Scooter", "Back" };
-		char[] controls2 = new char[] { 'M', 'S', 'B' };
+		String[] entries2 = new String[] { "Show Map", "Move Scooter", "Back" };
+		char[] controls2 = new char[] { 'S', 'M', 'B' };
 		Runnable[] functions2 = new Runnable[] {
 				() -> this.pushShowData(this.oMap),
-				() -> this.pushShowData(tmpScooter),
-				() -> selMenu.pop() };
+				() -> {
+					selMenu.push("Move Scooter");
+					this.pushShowData(new Object[]{this.tmpScooter, "--Target--", this.tmpKoord});
+				},
+				() -> selMenu.pop()
+				};
 		menus.createMenu("operative", entries2, controls2, functions2);
 
 		/*
@@ -82,6 +86,44 @@ public class UserInterface {
 				};
 		menus.createMenu("setup", entries8, controls8, functions8);
 
+		// OPERATIVE SUB MENUS BEGIN
+		
+		String[] entries14 = new String[] { "Select Scooter", "Select Destination", "Move Scooter", "Back" };
+		char[] controls14 = new char[] { 'S', 'D', 'M', 'B' };
+		Runnable[] functions14 = new Runnable[] {
+				() -> {
+					selMenu.push("Select Scooter");
+					this.pushShowData(this.tmpScooter);
+				},
+				() -> {
+					this.selMenu.push("KoordinatenUntermenu");
+					this.pushShowData(this.tmpKoord);
+					},
+				() -> System.err.println("Warning this Feature is Unimplemented!!!"),
+				() -> {
+					selMenu.pop();
+					this.popShowData();
+				}
+				};
+		menus.createMenu("Move Scooter", entries14, controls14, functions14);
+		
+		String[] entries15 = new String[] { "Firma Owning", "Koordinaten", "Load", "Back (Abort)" };
+		char[] controls15 = new char[] { 'F', 'K', 'L', 'B' };
+		Runnable[] functions15 = new Runnable[] {
+				() -> this.tmpScooter.setOwnedBy(this.getUserStringInput("Firma Owning")),
+				() -> {
+					this.selMenu.push("KoordinatenUntermenu");
+					this.pushShowData(this.tmpKoord);
+					},
+				() -> this.loadScooter(),
+				() -> selMenu.pop()
+				};
+		menus.createMenu("Select Scooter", entries15, controls15, functions15);
+		
+		// OPERATIVE SUB MENUS END
+		
+		// SETUP SUB MENUS BEGIN
+		
 		// Company Sub menu
 		String[] entries9 = new String[] { "New Company", "Delete Company", "Back" };
 		char[] controls9 = new char[] { 'N', 'D', 'B' };
@@ -131,6 +173,8 @@ public class UserInterface {
 				()->selMenu.pop()
 				};
 		menus.createMenu("delete company", entries12, controls12, functions12);
+		
+		
 		String[] entries13 = new String[] {"Select Ladepunkt by Koordinate", "Back"};
 		
 		/*
@@ -202,16 +246,19 @@ public class UserInterface {
 				this::saveScooter };
 		menus.createMenu("new Scooter", entries7, controls7, functions7);
 
+		// SETUP SUB MENUS END
+		
 		/*
 		 * Koordinaten untermenue
 		 */
 
-		String[] entries6 = new String[] { "Set KoordinatenX", "Set KoordinatenY", "Back (Abort)" };
-		char[] controls6 = new char[] { 'X', 'Y', 'B' };
+		String[] entries6 = new String[] { "Set KoordinatenX", "Set KoordinatenY", "Save", "Back (Abort)" };
+		char[] controls6 = new char[] { 'X', 'Y', 'S', 'B' };
 		Runnable[] functions6 = new Runnable[] {
 				() -> this.tmpKoord.setx(getUserIntInput("Koordinaten X")),
 				() -> this.tmpKoord.sety(getUserIntInput("Koordinaten Y")),
-				() -> this.leaveKoordMenu()
+				() -> this.leaveKoordMenu(),
+				() -> selMenu.pop()
 				};
 		menus.createMenu("KoordinatenUntermenu", entries6, controls6, functions6);
 	}
@@ -222,9 +269,7 @@ public class UserInterface {
 		this.tmpLadepunkt.y = this.tmpKoord.gety();
 
 		this.tmpScooter.x = this.tmpKoord.getx();
-		this.tmpScooter.x = this.tmpKoord.gety();
-		this.tmpKoord.setx(0);
-		this.tmpKoord.sety(0);
+		this.tmpScooter.y = this.tmpKoord.gety();
 		this.popShowData();
 	}
 
@@ -285,6 +330,10 @@ public class UserInterface {
 		this.popShowData();
 		this.selMenu.pop();
 	}
+	
+	private void loadLadepunkt(String sFirmaName) {
+		this.tmpLadepunkt = oData.getLadepunkt(sFirmaName, "");
+	}
 
 	private void saveScooter() {
 		System.out.println("Saving Scooter");
@@ -297,6 +346,18 @@ public class UserInterface {
 		this.tmpScooter = new Scooter();
 		this.popShowData();
 		this.selMenu.pop();
+	}
+	
+	private void loadScooter() {
+		//To load scooter the data for the scooter to be searched is stored in tmpScooter
+		Scooter s = this.oData.getScooter(this.tmpScooter.getFirmaOwning(), this.tmpScooter.x, this.tmpScooter.y);
+		this.tmpScooter = s;
+		if(this.tmpScooter == null) {
+			this.tmpScooter = new Scooter();
+		} else {
+			this.popShowData();
+			this.pushShowData(new Object[]{this.tmpScooter, "--Target--", this.tmpKoord});
+		}
 	}
 
 	public void mainLoop() {

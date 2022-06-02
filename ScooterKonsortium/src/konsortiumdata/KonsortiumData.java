@@ -33,7 +33,7 @@ public class KonsortiumData {
 	 * 
 	 * @param sNameFirma
 	 */
-	public void PushFirma(String sNameFirma) {
+	public void pushFirma(String sNameFirma) {
 		
 	}
 	
@@ -130,13 +130,45 @@ public class KonsortiumData {
 		
 	}
 	
+	public Ladepunkt getLadepunkt(String sNameFirma, String sLadeName) {
+		Firma f = this.oFirmen.get(sNameFirma);
+		if (f == null) {
+			System.err.printf("Cannot find the Ladepunkt %s! The company %s does not exist.%n", sLadeName, sNameFirma);
+			return null;
+		}
+		Ladepunkt[] al = f.getladepunkte();
+		for (Ladepunkt l : al) {
+			if (l.getNameLadepunkt().equals(sLadeName)) {
+				return l;
+			}
+		}
+		System.err.printf("Could not locate Ladepunkt %s! There is no Ladepunkt with name %s in the company %s.%n", sLadeName, sLadeName, sNameFirma);
+		return null;
+	}
+	
 	/**
 	 * retrieves array of scooters from the specified Firma
 	 * !! Uses the internal Data Structure 
 	 * @param sNameFirma
 	 * @return
 	 */
-	public Scooter[] getScooter(String sNameFirma) {
+	public Scooter[] getScooters(String sNameFirma) {
+		return null;
+	}
+	
+	public Scooter getScooter(String sNameFirma, int x, int y) {
+		Firma f = this.oFirmen.get(sNameFirma);
+		if (f == null) {
+			System.err.printf("Cannot find the Scooter at %d %d! The company %s does not exist.%n", x, y, sNameFirma);
+			return null;
+		}
+		Scooter[] as = f.getScooters();
+		for (Scooter s : as) {
+			if (s.x == x && s.y==y) {
+				return s;
+			}
+		}
+		System.err.printf("Could not locate Scooter at %d %d! There is no scooter there from the company %s.%n", x, y, sNameFirma);
 		return null;
 	}
 

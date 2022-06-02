@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
 
+
+
 public class Menus {
 	private HashMap<String, Menu> menus = new HashMap<>();
 	private int width = 10;
@@ -176,8 +178,16 @@ public class Menus {
 		if(this.showObject.peek() == null) return null;
 		ArrayList<String> lines = new ArrayList<>(); 
 		
-		this.showObject.peek().toString().lines().forEach((l)-> lines.add(l));
+		Object oShow = this.showObject.peek();
 		
+		if(oShow.getClass().isArray()) {
+			Object[] os = (Object[]) oShow;
+			for(Object o : os) {
+				o.toString().lines().forEach((l)-> lines.add(l));
+			}
+		} else {
+			oShow.toString().lines().forEach((l)-> lines.add(l));
+		}
 		String out[] = new String[lines.size()];
 		return lines.toArray(out);
 	}
