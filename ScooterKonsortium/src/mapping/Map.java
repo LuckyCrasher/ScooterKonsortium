@@ -1,6 +1,7 @@
 package mapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import konsortiumdata.*;
 
@@ -30,10 +31,17 @@ public class Map extends MapTextRenderer {
 				this.placeObject(l.x, l.y, l);
 			}
 		}
-		
 	}
 	
-
+	public HashMap<Scooter, Ladepunkt[]> calculateNearestLade() {
+	
+		return null;
+	}
+	
+	public Ladepunkt[] calculateNearest(Scooter s) {
+		
+		return null;
+	}
 	
 	public String toString() {
 		loadData();

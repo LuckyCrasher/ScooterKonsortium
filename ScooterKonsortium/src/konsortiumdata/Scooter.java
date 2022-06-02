@@ -58,7 +58,7 @@ public class Scooter extends MapObjekt {
 	}
 	
 	public String render() {
-		return "S";
+		return String.format("S\n% d%%", iCurrentProzent);
 	}
 
 	public void setOwnedBy(String sFirmaOwning) {
