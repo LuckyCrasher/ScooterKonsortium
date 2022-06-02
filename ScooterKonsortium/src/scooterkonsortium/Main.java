@@ -16,7 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		oData = new KonsortiumData();
 		
-		//setFakeData();
+		setFakeData();
 		
 		oUserInterface = new UserInterface(oData);
 		oDatenbank = new Datenbank();
@@ -25,16 +25,16 @@ public class Main {
 	
 	private static void setFakeData() {
 		Firma f = new Firma("Firma1", 0, "TEST", 0, "TEST", "TEST");
-		Scooter s = new Scooter();
+		Scooter s = new Scooter(3,3,90, 0.3, 5, false, "Firma1");
 		f.putScooter(s);
 		Ladepunkt l = new Ladepunkt("Lade1",1 ,1, 10, 5, f.getName());
 		f.putLadepunkt(l);
 		oData.addFirma(f);
 		
 		f = new Firma("Firma2", 0, " ", 0, " ", " ");
-		s = new Scooter();
+		s = new Scooter(4,6,90, 0.3, 5, false, "Firma2");
 		f.putScooter(s);
-		l = new Ladepunkt("Lade2",1 ,1, 10, 5, f.getName());
+		l = new Ladepunkt("Lade2",9 ,9, 10, 5, f.getName());
 		f.putLadepunkt(l);
 		oData.addFirma(f);
 		

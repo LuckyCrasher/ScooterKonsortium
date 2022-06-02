@@ -51,8 +51,11 @@ public class UserInterface {
 
 		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Quit" };
 		char[] controls1 = new char[] { 'O', 'S', 'Q' };
-		Runnable[] functions1 = new Runnable[] { () -> selMenu.push("operative"), () -> selMenu.push("setup"),
-				() -> this.bRunning = false };
+		Runnable[] functions1 = new Runnable[] {
+				() -> selMenu.push("operative"),
+				() -> selMenu.push("setup"),
+				() -> this.bRunning = false
+				};
 		menus.createMenu("main", entries1, controls1, functions1);
 
 		/*
@@ -60,7 +63,9 @@ public class UserInterface {
 		 */
 		String[] entries2 = new String[] { "Show Map", "Select Scooter", "Back" };
 		char[] controls2 = new char[] { 'M', 'S', 'B' };
-		Runnable[] functions2 = new Runnable[] { () -> this.setShowData(this.oMap), () -> this.setShowData(tmpScooter),
+		Runnable[] functions2 = new Runnable[] {
+				() -> this.pushShowData(this.oMap),
+				() -> this.pushShowData(tmpScooter),
 				() -> selMenu.pop() };
 		menus.createMenu("operative", entries2, controls2, functions2);
 
@@ -69,38 +74,65 @@ public class UserInterface {
 		 */
 		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Back" };
 		char[] controls8 = new char[] { 'C', 'L', 'S', 'B' };
-		Runnable[] functions8 = new Runnable[] { () -> selMenu.push("company menu"),
-				() -> selMenu.push("Ladepunkt menu"), () -> selMenu.push("Scooter menu"), () -> selMenu.pop() };
+		Runnable[] functions8 = new Runnable[] {
+				() -> selMenu.push("company menu"),
+				() -> selMenu.push("Ladepunkt menu"),
+				() -> selMenu.push("Scooter menu"),
+				() -> selMenu.pop()
+				};
 		menus.createMenu("setup", entries8, controls8, functions8);
 
+		// Company Sub menu
 		String[] entries9 = new String[] { "New Company", "Delete Company", "Back" };
 		char[] controls9 = new char[] { 'N', 'D', 'B' };
-		Runnable[] functions9 = new Runnable[] { () -> selMenu.push("new company"), () -> {
-			selMenu.push("delete company");
-		}, () -> selMenu.pop() };
+		Runnable[] functions9 = new Runnable[] {
+				() -> {
+					selMenu.push("new company");
+					this.pushShowData(this.tmpFirma);
+				},
+				() -> selMenu.push("delete company"),
+				() -> {
+					selMenu.pop();
+					
+				}
+				};
 		menus.createMenu("company menu", entries9, controls9, functions9);
 
+		// Ladepunkt Sub menu
 		String[] entries10 = new String[] { "New Ladepunkt", "Delete Ladepunkt", "Back" };
 		char[] controls10 = new char[] { 'N', 'D', 'B' };
-		Runnable[] functions10 = new Runnable[] { () -> selMenu.push("new Ladepunkt"), () -> {
-			selMenu.push("delete Ladepunkt");
-		}, () -> selMenu.pop() };
+		Runnable[] functions10 = new Runnable[] {
+				() ->{
+					selMenu.push("new Ladepunkt");
+					this.pushShowData(this.tmpLadepunkt);
+				},
+				() -> selMenu.push("delete Ladepunkt"),
+				() -> selMenu.pop()
+				};
 		menus.createMenu("Ladepunkt menu", entries10, controls10, functions10);
 
+		// Scooter Sub menu
 		String[] entries11 = new String[] { "New Scooter", "Delete Scooter", "Back" };
 		char[] controls11 = new char[] { 'N', 'D', 'B' };
-		Runnable[] functions11 = new Runnable[] { () -> selMenu.push("new Scooter"), () -> {
-			selMenu.push("delete Scooter");
-		}, () -> selMenu.pop() };
+		Runnable[] functions11 = new Runnable[] {
+				() -> {
+					selMenu.push("new Scooter");
+					this.pushShowData(this.tmpScooter);
+				},
+				() -> selMenu.push("delete Scooter"),
+				() -> selMenu.pop()
+				};
 		menus.createMenu("Scooter menu", entries11, controls11, functions11);
 
 		String[] entries12 = new String[] { "Select Company by Name", "Back" };
 		char[] controls12 = new char[] { 'S', 'B' };
-		Runnable[] functions12 = new Runnable[] { () -> this.deleteCompany(), ()->selMenu.pop()  };
+		Runnable[] functions12 = new Runnable[] {
+				() -> this.deleteCompany(),
+				()->selMenu.pop()
+				};
 		menus.createMenu("delete company", entries12, controls12, functions12);
-
-		
 		String[] entries13 = new String[] {"Select Ladepunkt by Koordinate", "Back"};
+		
 		/*
 		 * String[] entries3 = new String[] {"Create new company",
 		 * "Create new Ladepunkt", "Create new Scooter", "Back"}; char[] controls3 = new
@@ -119,11 +151,13 @@ public class UserInterface {
 		String[] entries4 = new String[] { "Set name", "Set road", "Set post code", "Set city", "Set hotline",
 				"Back (Abort)", "Save" };
 		char[] controls4 = new char[] { 'N', 'R', 'P', 'C', 'H', 'B', 'S' };
-		Runnable[] functions4 = new Runnable[] { () -> this.tmpFirma.setName(getUserStringInput("Company name")),
+		Runnable[] functions4 = new Runnable[] {
+				() -> this.tmpFirma.setName(getUserStringInput("Company name")),
 				() -> this.tmpFirma.setAdresse(getUserStringInput("Road name")),
 				() -> this.tmpFirma.setPLZ(this.getUserIntInput("Company post code")),
 				() -> this.tmpFirma.setStadt(this.getUserStringInput("Company city")),
-				() -> this.tmpFirma.setHotline(this.getUserStringInput("Company hotline")), () -> this.selMenu.pop(),
+				() -> this.tmpFirma.setHotline(this.getUserStringInput("Company hotline")),
+				() -> this.selMenu.pop(),
 				this::saveCompany };
 		menus.createMenu("new company", entries4, controls4, functions4);
 
@@ -135,12 +169,15 @@ public class UserInterface {
 				"Set company owing", "Back (Abort)", "Save" };
 		char[] controls5 = new char[] { 'N', 'K', 'C', 'U', 'F', 'B', 'S' };
 		Runnable[] functions5 = new Runnable[] {
-				() -> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")), () -> {
+				() -> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
+				() -> {
 					this.selMenu.push("KoordinatenUntermenu");
-					this.setShowData(this.tmpKoord);
-				}, () -> this.tmpLadepunkt.setLadeCap(getUserIntInput("Ladepunkt Capacity")),
+					this.pushShowData(this.tmpKoord);
+					},
+				() -> this.tmpLadepunkt.setLadeCap(getUserIntInput("Ladepunkt Capacity")),
 				() -> this.tmpLadepunkt.setCurrentUse(getUserIntInput("Ladepunkt Usage")),
-				() -> this.tmpLadepunkt.setOwnedBy(getUserStringInput("Owned by")), () -> this.selMenu.pop(),
+				() -> this.tmpLadepunkt.setOwnedBy(getUserStringInput("Owned by")),
+				() -> this.selMenu.pop(),
 				this::saveLadepunkt };
 		menus.createMenu("new Ladepunkt", entries5, controls5, functions5);
 
@@ -151,14 +188,17 @@ public class UserInterface {
 		String[] entries7 = new String[] { "Set Koordinaten", "Set current Prozent", "Set current Earnings",
 				"Set covered Kilometers", "Set current status", "Set Firma owning", "Back (Abort)", "Save" };
 		char[] controls7 = new char[] { 'K', 'P', 'E', 'M', 'L', 'F', 'B', 'S' };
-		Runnable[] functions7 = new Runnable[] { () -> {
-			this.selMenu.push("KoordinatenUntermenu");
-			this.setShowData(this.tmpKoord);
-		}, () -> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
+		Runnable[] functions7 = new Runnable[] {
+				() -> {
+					this.selMenu.push("KoordinatenUntermenu");
+					this.pushShowData(this.tmpKoord);
+					},
+				() -> this.tmpScooter.setCurrentProzent(getUserIntInput("Current Percent")),
 				() -> this.tmpScooter.setCurrentEarn(getUserDoubleInput("Current Earnings")),
 				() -> this.tmpScooter.setCoveredKm(getUserIntInput("Covered Km")),
 				() -> this.tmpScooter.setCurrentStatus(getUserBooleanInput("Current Loading Status")),
-				() -> this.tmpScooter.setOwnedBy(getUserStringInput("Owned by")), () -> this.selMenu.pop(),
+				() -> this.tmpScooter.setOwnedBy(getUserStringInput("Owned by")),
+				() -> this.selMenu.pop(),
 				this::saveScooter };
 		menus.createMenu("new Scooter", entries7, controls7, functions7);
 
@@ -168,10 +208,12 @@ public class UserInterface {
 
 		String[] entries6 = new String[] { "Set KoordinatenX", "Set KoordinatenY", "Back (Abort)" };
 		char[] controls6 = new char[] { 'X', 'Y', 'B' };
-		Runnable[] functions6 = new Runnable[] { () -> this.tmpKoord.setx(getUserIntInput("Koordinaten X")),
-				() -> this.tmpKoord.sety(getUserIntInput("Koordinaten Y")), () -> this.leaveKoordMenu() };
+		Runnable[] functions6 = new Runnable[] {
+				() -> this.tmpKoord.setx(getUserIntInput("Koordinaten X")),
+				() -> this.tmpKoord.sety(getUserIntInput("Koordinaten Y")),
+				() -> this.leaveKoordMenu()
+				};
 		menus.createMenu("KoordinatenUntermenu", entries6, controls6, functions6);
-
 	}
 
 	private void leaveKoordMenu() {
@@ -183,9 +225,13 @@ public class UserInterface {
 		this.tmpScooter.x = this.tmpKoord.gety();
 		this.tmpKoord.setx(0);
 		this.tmpKoord.sety(0);
-
+		this.popShowData();
 	}
 
+	/*
+	 * Get User input in various forms
+	 */
+	
 	private String getUserStringInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
 		return sc.nextLine();
@@ -212,17 +258,13 @@ public class UserInterface {
 		return b;
 	}
 
-	public void showMenu() {
-		menus.drawUserInterface(selMenu.peek());
-	}
-
 	private void saveCompany() {
 		System.out.println("Saving Firma");
 		this.oData.addFirma(tmpFirma);
 		this.tmpFirma = null;
 		this.tmpFirma = new Firma();
-		this.setShowData(null);
 		this.selMenu.pop();
+		this.popShowData();
 	}
 
 	private void deleteCompany() {
@@ -240,7 +282,7 @@ public class UserInterface {
 		this.oData.addladepunkt(this.tmpLadepunkt.getFirmaOwning(), tmpLadepunkt);
 		this.tmpLadepunkt = null;
 		this.tmpLadepunkt = new Ladepunkt();
-		this.setShowData(null);
+		this.popShowData();
 		this.selMenu.pop();
 	}
 
@@ -253,6 +295,7 @@ public class UserInterface {
 		this.oData.addScooter(this.tmpScooter.getFirmaOwning(), tmpScooter);
 		this.tmpScooter = null;
 		this.tmpScooter = new Scooter();
+		this.popShowData();
 		this.selMenu.pop();
 	}
 
@@ -262,8 +305,16 @@ public class UserInterface {
 		}
 	}
 
-	public void setShowData(Object oShowData) {
-		this.menus.setShowData(oShowData);
+	public void popShowData() {
+		this.menus.popShowData();
+	}
+	
+	public void pushShowData(Object oShowData) {
+		this.menus.pushShowData(oShowData);
+	}
+	
+	public void showMenu() {
+		menus.drawUserInterface(selMenu.peek());
 	}
 
 }

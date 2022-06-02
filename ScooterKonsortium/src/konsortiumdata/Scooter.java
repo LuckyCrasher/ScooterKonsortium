@@ -8,7 +8,9 @@ public class Scooter extends MapObjekt {
 	private boolean bCurrentStatus;
 	private String sFirmaOwning;
 	
-	public Scooter(int piCurrentProzent, double pdCurrentEarn, int piCoveredKm, boolean pbCurrentStatus, String sFirmaOwning) {
+	public Scooter(int x, int y, int piCurrentProzent, double pdCurrentEarn, int piCoveredKm, boolean pbCurrentStatus, String sFirmaOwning) {
+		this.x = x;
+		this.y = y;
 		this.iCurrentProzent = piCurrentProzent;
 		this.dCurrentEarn = pdCurrentEarn;
 		this.iCoveredKm = piCoveredKm;
@@ -17,6 +19,8 @@ public class Scooter extends MapObjekt {
 	}
 	
 	public Scooter() {
+		this.x = 0;
+		this.y = 0;
 		this.iCurrentProzent = 100;
 		this.dCurrentEarn = 0.0;
 		this.iCoveredKm = 0;

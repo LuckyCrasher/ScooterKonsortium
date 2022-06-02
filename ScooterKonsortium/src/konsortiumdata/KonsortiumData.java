@@ -63,10 +63,10 @@ public class KonsortiumData {
 	}
 	
 	public void deleteFirma(String sNameFirma) {
-		this.oFirmen.remove(sNameFirma);
 		if (this.oFirmen.remove(sNameFirma) == null) {
-			System.err.printf("This Company cannot be deleted as the company does not exist");
+			System.err.printf("The Company %s cannot be deleted as the company does not exist%n", sNameFirma);
 		}
+		
 	}
 	
 	public void deleteLadepunkt(String Ladepunkt) {

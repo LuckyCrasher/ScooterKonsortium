@@ -36,6 +36,7 @@ public class Map extends MapTextRenderer {
 
 	
 	public String toString() {
+		loadData();
 		return this.render();
 	}
 }

@@ -8,7 +8,8 @@ public class Ladepunkt extends MapObjekt {
 	private String sFirmaOwning;
 	
 	public Ladepunkt(String psNameLadepunkt, int x, int y, int piLadeCap, int piCurrentUse, String sFirmaOwning) {
-		super();
+		this.x = x;
+		this.y = y;
 		this.sNameLadepunkt = psNameLadepunkt;
 		this.iLadeCap = piLadeCap;
 		this.iCurrentUse = piCurrentUse;

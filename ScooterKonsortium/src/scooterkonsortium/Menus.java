@@ -8,18 +8,19 @@ import konsortiumdata.Scooter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Menus {
 	private HashMap<String, Menu> menus = new HashMap<>();
 	private int width = 10;
 	
-	private Object showObject;
+	private Stack<Object> showObject = new Stack<>();
 	private KonsortiumData oData;
 	
 	private Scanner sc;
 	
 	public Menus(KonsortiumData oData, Scanner sc) {
-		this.showObject = null;
+		this.showObject.push(null); //Lowest item is null if data should be shown
 		this.oData = oData;
 		this.sc = new Scanner(System.in);
 	}
@@ -45,7 +46,7 @@ public class Menus {
 		
 		
 		//Recalculate new width of data to be shown
-		if(this.showObject != null) {
+		if(this.showObject.peek() != null) {
 			int t = 0;
 			for(String s : sShowData) {
 				t = Math.max(s.length(), t);
@@ -84,7 +85,7 @@ public class Menus {
 		}
 		
 		//Draw Data to be shown
-		if(this.showObject != null) {
+		if(this.showObject.peek() != null) {
 			for (String dataLine : sShowData) {
 				line = String.format("| %-" + (width + 4) + "s |%n", dataLine);
 				sb.append(line);
@@ -172,10 +173,10 @@ public class Menus {
 	
 	
 	private String[] getShowData() {
-		if(this.showObject == null) return null;
+		if(this.showObject.peek() == null) return null;
 		ArrayList<String> lines = new ArrayList<>(); 
 		
-		this.showObject.toString().lines().forEach((l)-> lines.add(l));
+		this.showObject.peek().toString().lines().forEach((l)-> lines.add(l));
 		
 		String out[] = new String[lines.size()];
 		return lines.toArray(out);
@@ -205,7 +206,11 @@ public class Menus {
 		return String.format("+ %s menu +", menuName);
 	}
 
-	public void setShowData(Object oShowData) {
-		this.showObject = oShowData;	
+	public void popShowData() {
+		this.showObject.pop();
+	}
+	
+	public void pushShowData(Object oShowData) {
+		this.showObject.push(oShowData);	
 	}
 }
