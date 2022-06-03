@@ -26,6 +26,7 @@ public class UserInterface {
 	private Ladepunkt tmpLadepunkt;
 	private Koordinaten tmpKoord;
 	private boolean bRunning;
+	private Runnable Runback; 
 
 	public UserInterface(KonsortiumData oData) {
 		this.oData = oData;

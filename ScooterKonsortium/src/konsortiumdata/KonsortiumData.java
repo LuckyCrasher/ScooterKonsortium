@@ -69,8 +69,10 @@ public class KonsortiumData {
 		
 	}
 	
-	public void deleteLadepunkt(String Ladepunkt) {
-	
+	public void deleteLadepunkt(Firma oFimra,String Ladepunkt) {
+		if(this.oFirmen.remove(oFirmen.getFirma.removeIf(name -> name.equals(Ladepunkt)))) {
+			
+		}
 	}
 	
 	public void deleteScooter() {
