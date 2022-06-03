@@ -69,17 +69,22 @@ public class KonsortiumData {
 		
 	}
 	
-	public void deleteLadepunkt(String sFirma,String Ladepunkt) {
+	public void deleteLadepunkt(String sFirma,String sLadepunkt) {
 		if(!this.oFirmen.containsKey(sFirma)) {
 			System.err.println("The Ladepunkt cannot be deleted as the company does not exist");
 			return;
 		}
-		this.oFirmen.get(sFirma).deleteLadepunkt(Ladepunkt);
+		
+		this.oFirmen.get(sFirma).deleteLadepunkt(sLadepunkt);
 	
 	}
 	
-	public void deleteScooter() {
-		
+	public void deleteScooter(String sFirma, int x, int y) {
+		if(!this.oFirmen.containsKey(sFirma)) {
+			System.err.println("The Ladepunkt cannot be deleted as the company does not exist");
+			return;
+		}
+		this.oFirmen.get(sFirma).deleteScooter(x, y);
 	}
 	/**
 	 * Adds a Scooter to the specified Company

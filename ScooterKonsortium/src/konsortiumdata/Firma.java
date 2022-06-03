@@ -100,12 +100,20 @@ public class Firma {
 		return this.aoScooter.toArray(out);
 	}
 	
+	public void deleteScooter (int x, int y) {
+		if(!aoScooter.removeIf((s)-> s.getx()== x && s.gety()== y)){
+			System.err.println("The Scooter cannot be deleted as there is no Scooter on this Coordinaten");
+		}
+	}
 	public Ladepunkt[] getladepunkte() {
 		Ladepunkt out[] = new Ladepunkt[this.aoLadepunkte.size()];
 		return this.aoLadepunkte.toArray(out);
 	}
+	
 	public void deleteLadepunkt(String pNameLadepunkt) {
-		aoLadepunkte.removeIf((l) -> l.getNameLadepunkt().equals(pNameLadepunkt));
+		if(!aoLadepunkte.removeIf((l) -> l.getNameLadepunkt().equals(pNameLadepunkt))) {
+			System.err.println("The Ladepunkt cannot be deleted as the Ladepunkt does not exist");
+		}
 	}
 	
 	public String toString() {

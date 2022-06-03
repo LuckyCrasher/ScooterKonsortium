@@ -1,5 +1,6 @@
 package scooterkonsortium;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;
 import mapping.*;
@@ -26,7 +27,7 @@ public class UserInterface {
 	private Ladepunkt tmpLadepunkt;
 	private Koordinaten tmpKoord;
 	private boolean bRunning;
-	private Runnable Runback; 
+	private Runnable oCallback; 
 
 	public UserInterface(KonsortiumData oData) {
 		this.oData = oData;
@@ -41,6 +42,8 @@ public class UserInterface {
 		this.tmpLadepunkt = new Ladepunkt();
 		this.tmpKoord = new Koordinaten();
 
+		this.oCallback = ()->System.out.println("");
+		
 		createMenus();
 		selMenu.add("main");
 	}
@@ -108,11 +111,16 @@ public class UserInterface {
 				};
 		menus.createMenu("Move Scooter", entries14, controls14, functions14);
 		
+		//select Scooter menu
 		String[] entries15 = new String[] { "Firma Owning", "Koordinaten", "Load", "Back (Abort)" };
 		char[] controls15 = new char[] { 'F', 'K', 'L', 'B' };
 		Runnable[] functions15 = new Runnable[] {
 				() -> this.tmpScooter.setOwnedBy(this.getUserStringInput("Firma Owning")),
 				() -> {
+					this.oCallback = () -> {
+						this.tmpScooter.x = this.tmpKoord.getx();
+						this.tmpScooter.y = this.tmpKoord.gety();
+					};
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
@@ -167,17 +175,23 @@ public class UserInterface {
 				};
 		menus.createMenu("Scooter menu", entries11, controls11, functions11);
 
+		// delete Company Menu
 		String[] entries12 = new String[] { "Select Company by Name", "Back" };
 		char[] controls12 = new char[] { 'S', 'B' };
 		Runnable[] functions12 = new Runnable[] {
 				() -> this.deleteCompany(),
-				()->selMenu.pop()
+				() -> selMenu.pop()
 				};
 		menus.createMenu("delete company", entries12, controls12, functions12);
 		
-		
-		String[] entries13 = new String[] {"Select Ladepunkt by Koordinate", "Back"};
-		
+		//delete Ladepunkt
+		String[] entries13 = new String[] {"Select Ladepunkt by Name of Ladepunkt & Firma", "Back"};
+		char[] controls13 = new char[] {'S', 'B'};
+		Runnable[] functions13 = new Runnable[] {
+				()-> this.deleteLadepunkt(),
+				()-> selMenu.pop()
+		};
+		menus.createMenu("delete Ladepunkt", entries13, controls13, functions13);
 		/*
 		 * String[] entries3 = new String[] {"Create new company",
 		 * "Create new Ladepunkt", "Create new Scooter", "Back"}; char[] controls3 = new
@@ -216,6 +230,10 @@ public class UserInterface {
 		Runnable[] functions5 = new Runnable[] {
 				() -> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
 				() -> {
+					this.oCallback = () -> {
+						this.tmpLadepunkt.x = this.tmpKoord.getx();
+						this.tmpLadepunkt.y = this.tmpKoord.gety();
+					};
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
@@ -235,6 +253,10 @@ public class UserInterface {
 		char[] controls7 = new char[] { 'K', 'P', 'E', 'M', 'L', 'F', 'B', 'S' };
 		Runnable[] functions7 = new Runnable[] {
 				() -> {
+					this.oCallback = () -> {
+						this.tmpScooter.x = this.tmpKoord.getx();
+						this.tmpScooter.y = this.tmpKoord.gety();
+					};
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
@@ -266,11 +288,8 @@ public class UserInterface {
 
 	private void leaveKoordMenu() {
 		this.selMenu.pop();
-		this.tmpLadepunkt.x = this.tmpKoord.getx();
-		this.tmpLadepunkt.y = this.tmpKoord.gety();
-
-		this.tmpScooter.x = this.tmpKoord.getx();
-		this.tmpScooter.y = this.tmpKoord.gety();
+		this.oCallback.run();
+		this.oCallback = () -> System.err.println("No callback defined");
 		this.popShowData();
 	}
 
@@ -285,7 +304,14 @@ public class UserInterface {
 
 	private int getUserIntInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
-		int i = sc.nextInt();
+		int i;
+		try {
+			i = sc.nextInt();
+		} catch (InputMismatchException e) {
+			System.err.println("Die eingabe war keine Zahl");
+			e.printStackTrace();
+			i = 0;
+		}
 		sc.nextLine();
 		return i;
 	}
@@ -330,6 +356,10 @@ public class UserInterface {
 		this.tmpLadepunkt = new Ladepunkt();
 		this.popShowData();
 		this.selMenu.pop();
+	}
+	private void deleteLadepunkt() {
+		System.out.println("Deleting Ladepunkt");
+		this.oData.deleteLadepunkt(getUserStringInput("Ladepunkt Name"));
 	}
 	
 	private void loadLadepunkt(String sFirmaName) {
