@@ -104,6 +104,9 @@ public class Firma {
 		Ladepunkt out[] = new Ladepunkt[this.aoLadepunkte.size()];
 		return this.aoLadepunkte.toArray(out);
 	}
+	public void deleteLadepunkt(String pNameLadepunkt) {
+		aoLadepunkte.removeIf((l) -> l.getNameLadepunkt().equals(pNameLadepunkt));
+	}
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

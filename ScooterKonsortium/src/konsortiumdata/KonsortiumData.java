@@ -69,10 +69,13 @@ public class KonsortiumData {
 		
 	}
 	
-	public void deleteLadepunkt(Firma oFimra,String Ladepunkt) {
-		if(this.oFirmen.remove(oFirmen.getFirma.removeIf(name -> name.equals(Ladepunkt)))) {
-			
+	public void deleteLadepunkt(String sFirma,String Ladepunkt) {
+		if(!this.oFirmen.containsKey(sFirma)) {
+			System.err.println("The Ladepunkt cannot be deleted as the company does not exist");
+			return;
 		}
+		this.oFirmen.get(sFirma).deleteLadepunkt(Ladepunkt);
+	
 	}
 	
 	public void deleteScooter() {
