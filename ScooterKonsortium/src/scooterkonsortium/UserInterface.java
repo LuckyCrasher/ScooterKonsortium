@@ -27,7 +27,7 @@ public class UserInterface {
 	private Ladepunkt tmpLadepunkt;
 	private Koordinaten tmpKoord;
 	private boolean bRunning;
-	private Runnable oCallback; 
+	
 
 	public UserInterface(KonsortiumData oData) {
 		this.oData = oData;
@@ -42,7 +42,7 @@ public class UserInterface {
 		this.tmpLadepunkt = new Ladepunkt();
 		this.tmpKoord = new Koordinaten();
 
-		this.oCallback = ()->System.out.println("");
+		this.menus.pushCallback(() -> System.out.println("No callback defined"));
 		
 		createMenus();
 		selMenu.add("main");
@@ -117,14 +117,16 @@ public class UserInterface {
 		Runnable[] functions15 = new Runnable[] {
 				() -> this.tmpScooter.setOwnedBy(this.getUserStringInput("Firma Owning")),
 				() -> {
-					this.oCallback = () -> {
+					this.menus.pushCallback(() -> {
 						this.tmpScooter.x = this.tmpKoord.getx();
 						this.tmpScooter.y = this.tmpKoord.gety();
-					};
+					});
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
-				() -> this.loadScooter(),
+				() -> {
+						this.loadScooter();
+					},
 				() -> selMenu.pop()
 				};
 		menus.createMenu("Select Scooter", entries15, controls15, functions15);
@@ -144,7 +146,6 @@ public class UserInterface {
 				() -> selMenu.push("delete company"),
 				() -> {
 					selMenu.pop();
-					
 				}
 				};
 		menus.createMenu("company menu", entries9, controls9, functions9);
@@ -230,10 +231,10 @@ public class UserInterface {
 		Runnable[] functions5 = new Runnable[] {
 				() -> this.tmpLadepunkt.setNameLadepunkt(getUserStringInput("Ladepunkt name")),
 				() -> {
-					this.oCallback = () -> {
+					this.menus.pushCallback(() -> {
 						this.tmpLadepunkt.x = this.tmpKoord.getx();
 						this.tmpLadepunkt.y = this.tmpKoord.gety();
-					};
+					});
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
@@ -253,10 +254,10 @@ public class UserInterface {
 		char[] controls7 = new char[] { 'K', 'P', 'E', 'M', 'L', 'F', 'B', 'S' };
 		Runnable[] functions7 = new Runnable[] {
 				() -> {
-					this.oCallback = () -> {
+					this.menus.pushCallback(() -> {
 						this.tmpScooter.x = this.tmpKoord.getx();
 						this.tmpScooter.y = this.tmpKoord.gety();
-					};
+					});
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
@@ -288,8 +289,8 @@ public class UserInterface {
 
 	private void leaveKoordMenu() {
 		this.selMenu.pop();
-		this.oCallback.run();
-		this.oCallback = () -> System.err.println("No callback defined");
+		this.menus.peekCallback().run();
+		this.menus.popCallback();
 		this.popShowData();
 	}
 
@@ -387,6 +388,7 @@ public class UserInterface {
 			this.tmpScooter = new Scooter();
 		} else {
 			this.popShowData();
+			this.selMenu.pop();
 			this.pushShowData(new Object[]{this.tmpScooter, "--Target--", this.tmpKoord});
 		}
 	}

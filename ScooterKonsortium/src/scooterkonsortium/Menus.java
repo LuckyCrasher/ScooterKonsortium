@@ -17,6 +17,7 @@ public class Menus {
 	private int width = 10;
 	
 	private Stack<Object> showObject = new Stack<>();
+	private Stack<Runnable> callbacks = new Stack<>();
 	private KonsortiumData oData;
 	
 	private Scanner sc;
@@ -218,6 +219,18 @@ public class Menus {
 
 	public void popShowData() {
 		this.showObject.pop();
+	}
+	
+	public Runnable peekCallback() {
+		return this.callbacks.peek();
+	}
+	
+	public void popCallback() {
+		this.callbacks.pop();
+	}
+	
+	public void pushCallback(Runnable oCallback) {
+		this.callbacks.push(oCallback);
 	}
 	
 	public void pushShowData(Object oShowData) {
