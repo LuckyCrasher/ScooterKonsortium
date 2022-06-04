@@ -27,6 +27,7 @@ public class UserInterface {
 	private Ladepunkt tmpLadepunkt;
 	private Koordinaten tmpKoord;
 	private boolean bRunning;
+	private Object map;
 	
 
 	public UserInterface(KonsortiumData oData) {
@@ -80,12 +81,13 @@ public class UserInterface {
 		/*
 		 * Setup Mode erlaubt das erstellen von Elementen
 		 */
-		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Back" };
-		char[] controls8 = new char[] { 'C', 'L', 'S', 'B' };
+		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Calc Distances", "Back" };
+		char[] controls8 = new char[] { 'C', 'L', 'S', 'D', 'B' };
 		Runnable[] functions8 = new Runnable[] {
 				() -> selMenu.push("company menu"),
 				() -> selMenu.push("Ladepunkt menu"),
 				() -> selMenu.push("Scooter menu"),
+				() -> this.pushShowData(this.oMap.getCaluclateDistances()),
 				() -> selMenu.pop()
 				};
 		menus.createMenu("setup", entries8, controls8, functions8);
@@ -186,13 +188,35 @@ public class UserInterface {
 		menus.createMenu("delete company", entries12, controls12, functions12);
 		
 		//delete Ladepunkt
-		String[] entries13 = new String[] {"Select Ladepunkt by Name of Ladepunkt & Firma", "Back"};
-		char[] controls13 = new char[] {'S', 'B'};
-		Runnable[] functions13 = new Runnable[] {
-				()-> this.deleteLadepunkt(),
-				()-> selMenu.pop()
-		};
+		String[] entries13 = new String[] {"Firma Name", "Ladepunkt Name","Delete", "Back"};
+		char[] controls13 = new char[] {'F','L','D','B'};
+		Runnable [] functions13 = new Runnable[] {
+				() -> this.tmpLadepunkt.setOwnedBy(this.getUserStringInput("Firma Owning")),
+				() -> this.tmpLadepunkt.setNameLadepunkt(this.getUserStringInput("Ladepunkt Name")),
+				() -> this.deleteLadepunkt(),
+				() -> selMenu.pop()
+				};
 		menus.createMenu("delete Ladepunkt", entries13, controls13, functions13);
+		
+		//delete Scooter
+		String[] entries16 = new String[] {"Firma Name", "Koordinaten Scooter","Delete", "Back"};
+		char[] controls16 = new char[] {'F','S','D','B'};
+		Runnable [] functions16 = new Runnable[] {
+				() -> this.tmpScooter.setOwnedBy(this.getUserStringInput("Firma Owning")),
+				() -> {
+					this.menus.pushCallback(() -> {
+						this.tmpScooter.x = this.tmpKoord.getx();
+						this.tmpScooter.y = this.tmpKoord.gety();
+					});
+					this.selMenu.push("KoordinatenUntermenu");
+					this.pushShowData(this.tmpKoord);
+					},
+				() -> this.deleteScooter(),
+				() -> selMenu.pop()
+				};
+		menus.createMenu("delete Scooter", entries16, controls16, functions16);
+		
+
 		/*
 		 * String[] entries3 = new String[] {"Create new company",
 		 * "Create new Ladepunkt", "Create new Scooter", "Back"}; char[] controls3 = new
@@ -360,11 +384,7 @@ public class UserInterface {
 	}
 	private void deleteLadepunkt() {
 		System.out.println("Deleting Ladepunkt");
-		this.oData.deleteLadepunkt(getUserStringInput("Ladepunkt Name"));
-	}
-	
-	private void loadLadepunkt(String sFirmaName) {
-		this.tmpLadepunkt = oData.getLadepunkt(sFirmaName, "");
+		this.oData.deleteLadepunkt(this.tmpLadepunkt.getFirmaOwning(),this.tmpLadepunkt.getNameLadepunkt());
 	}
 
 	private void saveScooter() {
@@ -378,6 +398,11 @@ public class UserInterface {
 		this.tmpScooter = new Scooter();
 		this.popShowData();
 		this.selMenu.pop();
+	}
+	
+	private void deleteScooter() {
+		System.out.println("Deleting Scooter");
+		this.oData.deleteScooter(this.tmpScooter.getFirmaOwning(), this.tmpScooter.x, this.tmpScooter.y);
 	}
 	
 	private void loadScooter() {

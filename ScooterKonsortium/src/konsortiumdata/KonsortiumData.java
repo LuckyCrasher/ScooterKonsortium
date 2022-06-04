@@ -135,8 +135,12 @@ public class KonsortiumData {
 	 * @param sNameFrima
 	 * @return
 	 */
-	public Ladepunkt[] getLadepunkte(String sNameFrima) {
-		return null;
+	public Ladepunkt[] getLadepunkte(String sNameFirma) {
+		if (!this.oFirmen.containsKey(sNameFirma)) {
+			System.err.printf("Cannot find the Firma %s! The company %s does not exist.%n", sNameFirma, sNameFirma);
+			return null;
+		}
+		return this.oFirmen.get(sNameFirma).getladepunkte();
 		
 	}
 	

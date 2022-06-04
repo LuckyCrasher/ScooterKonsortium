@@ -102,7 +102,7 @@ public class Firma {
 	
 	public void deleteScooter (int x, int y) {
 		if(!aoScooter.removeIf((s)-> s.getx()== x && s.gety()== y)){
-			System.err.println("The Scooter cannot be deleted as there is no Scooter on this Coordinaten");
+			System.err.println("The Scooter cannot be deleted as there is no Scooter on this coordinate");
 		}
 	}
 	public Ladepunkt[] getladepunkte() {
