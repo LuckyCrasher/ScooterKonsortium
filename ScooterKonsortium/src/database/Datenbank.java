@@ -77,4 +77,25 @@ public class Datenbank {
 		String sQuerry = "INSERT INTO ladepunkt_daten (name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, firmenID) VALUES (\"" + name + "\", " + max_kapazitaet + ", " + aktuell_benutzt + ", " + fixe_koords_x + ", " + fixe_koords_y + ", " + firmenID + ");";
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
+	
+	public void updateAll(Firma poFirma) throws SQLException {
+		//Firma
+		String fname = poFirma.getName();
+		String adresse = poFirma.getAdresse();
+		String hotline = poFirma.getHotline();
+		
+		int PLZ = poFirma.getPLZ();
+		String stadt = poFirma.getStadt();
+		String sQuerry = "INSERT IGNORE INTO ort (stadt, PLZ) VALUES (\"" + stadt + "\", \"" + PLZ + "\");";
+		putStadt(sQuerry);
+		
+		int ortsID = getOrt(PLZ);
+		
+		String sQuerry2 = "UPDATE firma_daten (name, adresse, hotline, ortsID) SET (\"" + fname + "\", \"" + adresse + "\", \"" + hotline + "\", " + ortsID + ") WHERE ;";
+		oDBConnection.sendQuerryNoReturn(sQuerry2);
+		
+		
+		
+	}
+
 }
