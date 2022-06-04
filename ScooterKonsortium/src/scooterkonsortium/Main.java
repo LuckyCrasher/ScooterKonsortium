@@ -25,7 +25,8 @@ public class Main {
 	}
 	
 	private static void testDatabase() {
-		oData.pushAllData();
+		oData.pushFirma("Firma1");
+		
 	}
 
 	private static void setFakeData() {

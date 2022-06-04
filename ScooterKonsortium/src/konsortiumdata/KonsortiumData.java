@@ -41,7 +41,9 @@ public class KonsortiumData {
 	 * Pushes all Companies to the database
 	 */
 	public void pushFirmen() {
-		
+		for (String f : this.oFirmen.keySet()) {
+			this.oDatabase.pushFirmen(this.oFirmen.get(f));
+		}
 	}
 	
 	/**
@@ -50,7 +52,12 @@ public class KonsortiumData {
 	 * @param sNameFirma
 	 */
 	public void pushFirma(String sNameFirma) {
-		
+		try {
+			this.oDatabase.pushFirmen(this.oFirmen.get(sNameFirma));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**

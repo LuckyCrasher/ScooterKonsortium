@@ -1,6 +1,8 @@
 package database;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Locale;
 
 import konsortiumdata.*;
 
@@ -26,14 +28,14 @@ public class Datenbank {
 		String name = poScooter.getFirmaOwning();
 		int firmenID = getFirmaID(name);
 		
-		String sQuerry = "INSERT INTO firma_daten (aufenthalt_x, aufenthalt_y, ladezustand, zurueckgelegte_strecke, fahrtzustand_aktuell,"
+		String sQuerry = "INSERT INTO scooter_daten (aufenthalt_x, aufenthalt_y, ladezustand, zurueckgelegte_strecke, fahrtzustand_aktuell,"
 				+ " einnahmen_aktuell, firmenID) VALUES (" + koordX + ", " + koordY + ", " + ladezustand + ", " + strecke + ", " + fahrtzustand + ", " + einnahmen + ", " + firmenID + ");";
 		
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
 	
 	public int getFirmaID(String name) throws SQLException {
-		String sQuerry = "SELECT ID FROM firma_daten WHERE name = " + name + ";";
+		String sQuerry = "SELECT ID FROM firma_daten WHERE name LIKE '" + name + "';";
 		String[] returnValue = oDBConnection.sendQuerry(sQuerry);
 		String returnValue2 = returnValue[0];
 		int i = Integer.parseInt(returnValue2);
@@ -47,7 +49,7 @@ public class Datenbank {
 		
 		int PLZ = poFirma.getPLZ();
 		String stadt = poFirma.getStadt();
-		String sQuerry = "INSERT IGNORE INTO ort (stadt, PLZ) VALUES (\"" + stadt + "\", \"" + PLZ + "\");";
+		String sQuerry = "INSERT INTO ort (stadt, PLZ) VALUES (\"" + stadt + "\", \"" + PLZ + "\");";
 		putStadt(sQuerry);
 		
 		int ortsID = getOrt(PLZ);
@@ -76,11 +78,22 @@ public class Datenbank {
 		int fixe_koords_y = poLadepunkt.gety();
 		
 		String firma = poLadepunkt.getFirmaOwning();
-		int firmenID = getFirmaID(name);
+		int firmenID = getFirmaID(firma);
 		
 		String sQuerry = "INSERT INTO ladepunkt_daten (name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, firmenID) VALUES (\"" + name + "\", " + max_kapazitaet + ", " + aktuell_benutzt + ", " + fixe_koords_x + ", " + fixe_koords_y + ", " + firmenID + ");";
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
+
+	public void putEverything(Firma firma) throws SQLException {
+		this.putFirma(firma);
+		for(Scooter s : firma.getScooters()) {
+			this.putScooter(s);
+		}
+		for(Ladepunkt l: firma.getladepunkte()) {
+			this.putLadepunkt(l);
+		}
+	}
+	
 	
 	public void updateAll(Firma poFirma) throws SQLException {
 		//Firma
@@ -91,8 +104,8 @@ public class Datenbank {
 		
 		int ortsID = getOrt(PLZ);
 		
-		String sQuerry2 = String.format("UPDATE firma_daten SET "
-				+ "name";
+		String sQuerry2 = String.format("UPDATE firma_daten SET name='%s', adresse='%s', hotline='%s', ortsID=%d WHERE name LIKE '%s';",
+				fname, adresse, hotline, ortsID, fname);
 		oDBConnection.sendQuerryNoReturn(sQuerry2);
 		
 		for(Scooter s : poFirma.getScooters()) {
@@ -105,6 +118,19 @@ public class Datenbank {
 		
 	}
 	
+	public void updateFirma(Firma oFirma) throws SQLException {
+		String fname = oFirma.getName();
+		String adresse = oFirma.getAdresse();
+		String hotline = oFirma.getHotline();
+		int PLZ = oFirma.getPLZ();
+		
+		int ortsID = getOrt(PLZ);
+		
+		String sQuerry2 = String.format("UPDATE firma_daten SET name='%s', adresse='%s', hotline='%s', ortsID=%d WHERE name LIKE '%s';",
+				fname, adresse, hotline, ortsID, fname);
+		oDBConnection.sendQuerryNoReturn(sQuerry2);
+	}
+	
 	public void updateScooter(Scooter poScooter) throws SQLException {
 		int koordX = poScooter.getx();
 		int koordY = poScooter.gety();
@@ -115,10 +141,9 @@ public class Datenbank {
 		String name = poScooter.getFirmaOwning();
 		int firmenID = getFirmaID(name);
 		
-		String sQuerry = "UPDATE scooter_daten (aufenthalt_x, aufenthalt_y, ladezustand, zurueckgelegte_strecke, fahrtzustand_aktuell,"
-				+ " einnahmen_aktuell, firmenID) SET (" + koordX + ", " + koordY + ", " + ladezustand + ", " + strecke + ", " + fahrtzustand + ", " + einnahmen + ", " + firmenID + ") "
-						+ "WHERE aufenthalt_x = \" " + koordX + " \" AND aufenthalt_y = \"" + koordY + "\" ;";
-		
+		String sQuerry = String.format(Locale.US, "UPDATE scooter_daten SET aufenthalt_x=%d, aufenthalt_y=%d, ladezustand=%d, zurueckgelegte_strecke=%d,"
+				+ "fahrtzustand_aktuell=%b, einnahmen_aktuell=%f, firmenID=%d  WHERE aufenthalt_x=%d AND aufenthalt_y=%d;",
+				koordX, koordY, ladezustand, strecke, fahrtzustand, einnahmen, firmenID, koordX, koordY);
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
 	
@@ -132,10 +157,31 @@ public class Datenbank {
 		String firma = poLadepunkt.getFirmaOwning();
 		int firmenID = getFirmaID(firma);
 		
-		String sQuerry = "UPDATE ladepunkt_daten (name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, firmenID)"
-				+ "SET (\"" + name + "\", " + max_kapazitaet + ", " + aktuell_benutzt + ", " + fixe_koords_x + ", " + fixe_koords_y + ", " + firmenID + ")"
-						+ " WHERE name like \"" + name +"\";";
+		String sQuerry = String.format("INSERT INTO ladepunkt_daten (ID, name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, firmenID) "
+				+ "VALUES (%d, %s, %d, %d, %d, %d) ON DUPLICATE KEY UPDATE "
+				+ "name = VALUES(name), max_kapazitaet = VALUES(max_kapazitaet), aktuell_benutzt=VALUES(aktuell_benutzt), fixe_koords_x=VALUES(fixe_koords_x), fixe_koords_y=VALUES(fixe_koords_y);",
+				firmenID, name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y);
+		/*
+		INSERT INTO MyTable (quote_id, order_id, other_data) VALUES ('q200', 'o100', 'blah blah')
+		ON DUPLICATE KEY UPDATE 
+		  other_data = VALUES(other_data);
+		  */
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
+	
+	public void pushFirmen(Firma oFirma) throws SQLException {
+		String nameFirma = oFirma.getName();
+		String sQuerry = "SELECT ID FROM firma_daten WHERE name LIKE \"" + nameFirma +"\";";
+		String[] results = new String[100];
+		results = oDBConnection.sendQuerry(sQuerry);
+		System.out.println(Arrays.toString(results));
+		
+		if (results[0] == null) {
+			this.putFirma(oFirma);
+		} else {
+			this.updateFirma(oFirma);
+		}
+	}
+	
 
 }
