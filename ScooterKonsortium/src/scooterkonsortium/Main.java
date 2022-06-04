@@ -14,15 +14,20 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		oData = new KonsortiumData();
+		oDatenbank = new Datenbank();
+		oData = new KonsortiumData(oDatenbank);
 		
 		setFakeData();
+		testDatabase();
 		
 		oUserInterface = new UserInterface(oData);
-		oDatenbank = new Datenbank();
-		oUserInterface.mainLoop();
+		//oUserInterface.mainLoop();
 	}
 	
+	private static void testDatabase() {
+		oData.pushAllData();
+	}
+
 	private static void setFakeData() {
 		Firma f = new Firma("Firma1", 0, "TEST", 0, "TEST", "TEST");
 		Scooter s = new Scooter(3,3,90, 0.3, 5, false, "Firma1");

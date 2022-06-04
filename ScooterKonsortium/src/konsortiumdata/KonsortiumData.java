@@ -1,7 +1,10 @@
 package konsortiumdata;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import database.Datenbank;
 
 public class KonsortiumData {
 	
@@ -13,12 +16,25 @@ public class KonsortiumData {
 	 */
 	private HashMap<String, Firma> oFirmen = new HashMap<>();
 	
+	private Datenbank oDatabase;
 	
+	
+	public KonsortiumData(Datenbank oDatenbank) {
+		this.oDatabase = oDatenbank;
+	}
+
 	/**
 	 * Pushes all the data to the database
 	 */
 	public void pushAllData() {
-		
+		for(String f : this.oFirmen.keySet()) {
+			try {
+				this.oDatabase.updateAll(this.oFirmen.get(f));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -192,6 +208,11 @@ public class KonsortiumData {
 
 	public boolean containsCompany(String sFirmenName) {
 		return this.oFirmen.containsKey(sFirmenName);
+	}
+
+	public void setDatabase(Datenbank oDatenbank) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
