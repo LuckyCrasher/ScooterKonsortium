@@ -110,4 +110,24 @@ public class PathFindingAlgorithm {
 	private double calculateDistance(int x1, int y1, int x2, int y2) {
 		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 	}
+
+	public HashMap<Ladepunkt, Double> calculateNearestLadepunkt(Scooter scooter) {
+		String[] asFirmenNames = oData.getFirmaNames();
+		ArrayList<Ladepunkt> aoLadepunkte = new ArrayList<>();
+		
+		for (String s : asFirmenNames) {
+			for (Ladepunkt l : oData.getLadepunkte(s)) {
+				aoLadepunkte.add(l);
+			}
+		}
+		
+		HashMap<Ladepunkt, Double> out = new HashMap<>();
+		
+		for (Ladepunkt ladepunkt : aoLadepunkte) {
+			out.put(ladepunkt, this.calculateDistance(scooter.x, scooter.y, ladepunkt.x, ladepunkt.y));	
+		}
+		
+		out = this.sortByValue(out);
+		return out;
+	}
 }

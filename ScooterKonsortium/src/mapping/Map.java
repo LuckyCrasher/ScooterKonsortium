@@ -3,6 +3,8 @@ import pathFinding.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import konsortiumdata.*;
 
@@ -79,5 +81,25 @@ public class Map extends MapTextRenderer {
 	public String toString() {
 		loadData();
 		return this.render();
+	}
+
+	public String caluclateNearestLadepunkt(Scooter scooter) {
+		StringBuilder sb = new StringBuilder();
+		
+		
+		
+		Ladepunkt l;
+		double d;
+		
+		HashMap<Ladepunkt, Double> distance = this.oPFA.calculateNearestLadepunkt(scooter);
+		Entry<Ladepunkt, Double> entry = distance.entrySet().iterator().next();
+		l = entry.getKey();
+		d = entry.getValue();
+		
+		sb.append(String.format("Scooter at %d %d is under 30%% %n Nearest Ladepunkt is %s with a distance of %f %n",
+				scooter.x, scooter.y, l.getNameLadepunkt(), d));
+		
+		return sb.toString();
+		
 	}
 }

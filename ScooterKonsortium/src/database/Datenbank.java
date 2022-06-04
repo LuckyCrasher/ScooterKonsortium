@@ -5,8 +5,13 @@ import java.sql.SQLException;
 import konsortiumdata.*;
 
 public class Datenbank {
-	private DatenbankVerbindung oDBConnection = new DatenbankVerbindung();
+	private DatenbankVerbindung oDBConnection;
 	
+	
+	public Datenbank() {
+		this.oDBConnection = new DatenbankVerbindung();
+		this.oDBConnection.connect();
+	}
 	
 	public void load() {
 		oDBConnection.connect();
@@ -22,14 +27,14 @@ public class Datenbank {
 		String name = poScooter.getFirmaOwning();
 		int firmenID = getFirmaID(name);
 		
-		String sQuerry = "INSERT INTO firma_daten (aufenthalt_x, aufenthalt_y, ladezustand, zurueckgelegte_strecke, fahrtzustand_aktuell,"
+		String sQuerry = "INSERT INTO scooter_daten (aufenthalt_x, aufenthalt_y, ladezustand, zurueckgelegte_strecke, fahrtzustand_aktuell,"
 				+ " einnahmen_aktuell, firmenID) VALUES (" + koordX + ", " + koordY + ", " + ladezustand + ", " + strecke + ", " + fahrtzustand + ", " + einnahmen + ", " + firmenID + ");";
 		
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
 	
 	public int getFirmaID(String name) throws SQLException {
-		String sQuerry = "SELECT ID FROM firma_daten WHERE name = " + name + ";";
+		String sQuerry = "SELECT ID FROM firma_daten WHERE name LIKE \"" + name + "\";";
 		String[] returnValue = oDBConnection.sendQuerry(sQuerry);
 		String returnValue2 = returnValue[0];
 		int i = Integer.parseInt(returnValue2);
@@ -44,7 +49,7 @@ public class Datenbank {
 		int PLZ = poFirma.getPLZ();
 		String stadt = poFirma.getStadt();
 		String sQuerry = "INSERT IGNORE INTO ort (stadt, PLZ) VALUES (\"" + stadt + "\", \"" + PLZ + "\");";
-		putStadt(sQuerry);
+		putOrt(sQuerry);
 		
 		int ortsID = getOrt(PLZ);
 		
@@ -52,12 +57,12 @@ public class Datenbank {
 		oDBConnection.sendQuerryNoReturn(sQuerry2);
 	}
 	
-	public void putStadt(String sQuerry) throws SQLException {
+	public void putOrt(String sQuerry) throws SQLException {
 		oDBConnection.sendQuerryNoReturn(sQuerry);
 	}
 	
 	public int getOrt(int PLZ) throws SQLException {
-		String sQuerry = "SELECT ID FROM ort WHERE PLZ = " + PLZ + ";";
+		String sQuerry = "SELECT ortsID FROM ort WHERE PLZ = " + PLZ + ";";
 		String[] returnValue = oDBConnection.sendQuerry(sQuerry);
 		String returnValue2 = returnValue[0];
 		int i = Integer.parseInt(returnValue2);
@@ -72,7 +77,7 @@ public class Datenbank {
 		int fixe_koords_y = poLadepunkt.gety();
 		
 		String firma = poLadepunkt.getFirmaOwning();
-		int firmenID = getFirmaID(name);
+		int firmenID = getFirmaID(firma);
 		
 		String sQuerry = "INSERT INTO ladepunkt_daten (name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, firmenID) VALUES (\"" + name + "\", " + max_kapazitaet + ", " + aktuell_benutzt + ", " + fixe_koords_x + ", " + fixe_koords_y + ", " + firmenID + ");";
 		oDBConnection.sendQuerryNoReturn(sQuerry);

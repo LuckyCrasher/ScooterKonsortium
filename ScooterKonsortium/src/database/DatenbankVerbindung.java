@@ -16,8 +16,8 @@ public class DatenbankVerbindung {
 		
 	}*/
 	String url = "jdbc:mysql://192.168.178.21:3306/ik_scooter";
-	String user = "nils312";
-	String password = "admin";
+	String user = "scooter";
+	String password = "scooter";
 	
 	public void connect() {
 		try  {
@@ -35,14 +35,14 @@ public class DatenbankVerbindung {
 		String query = sQuerry;
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
-		stmt.close();
 		int columns = rs.getMetaData().getColumnCount();
 		String[] rsString = new String[columns];
 		while(rs.next()) {
-			for(int i=1;i<=columns;i++) {
-				rsString[i] = rs.getString(i);
+			for(int i=0;i<columns;i++) {
+				rsString[i] = rs.getString(i+1);
 			}
 		}
+		stmt.close();
 		return rsString;
 	}
 	

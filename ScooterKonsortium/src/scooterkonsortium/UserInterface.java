@@ -71,8 +71,8 @@ public class UserInterface {
 		Runnable[] functions2 = new Runnable[] {
 				() -> this.pushShowData(this.oMap),
 				() -> {
-					selMenu.push("Move Scooter");
-					this.pushShowData(new Object[]{this.tmpScooter, "--Target--", this.tmpKoord});
+					selMenu.push("Select Scooter");
+					this.pushShowData(this.tmpScooter);
 				},
 				() -> selMenu.pop()
 				};
@@ -427,7 +427,12 @@ public class UserInterface {
 		} else {
 			this.popShowData();
 			this.selMenu.pop();
-			this.pushShowData(new Object[]{this.tmpScooter, "--Target--", this.tmpKoord});
+			
+			if(this.tmpScooter.getCurrentProzent()<30) {
+				this.pushShowData(this.oMap.caluclateNearestLadepunkt(this.tmpScooter));
+			} else {
+				this.pushShowData(this.tmpScooter);
+			}
 		}
 	}
 
