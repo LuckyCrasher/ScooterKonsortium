@@ -81,13 +81,14 @@ public class UserInterface {
 		/*
 		 * Setup Mode erlaubt das erstellen von Elementen
 		 */
-		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Calc Distances", "Back" };
-		char[] controls8 = new char[] { 'C', 'L', 'S', 'D', 'B' };
+		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Calc Distances","Show Map", "Back" };
+		char[] controls8 = new char[] { 'C', 'L', 'S', 'D','M', 'B' };
 		Runnable[] functions8 = new Runnable[] {
 				() -> selMenu.push("company menu"),
 				() -> selMenu.push("Ladepunkt menu"),
 				() -> selMenu.push("Scooter menu"),
 				() -> this.pushShowData(this.oMap.getCaluclateDistances()),
+				() -> this.pushShowData(this.oMap),
 				() -> selMenu.pop()
 				};
 		menus.createMenu("setup", entries8, controls8, functions8);
@@ -228,10 +229,10 @@ public class UserInterface {
 		 * functions3);
 		 */
 
+		
 		/*
 		 * Create Firma Menu erlaubt es werte für die neue Firma zu setzen
 		 */
-
 		String[] entries4 = new String[] { "Set name", "Set road", "Set post code", "Set city", "Set hotline",
 				"Back (Abort)", "Save" };
 		char[] controls4 = new char[] { 'N', 'R', 'P', 'C', 'H', 'B', 'S' };
@@ -299,7 +300,6 @@ public class UserInterface {
 		/*
 		 * Koordinaten untermenue
 		 */
-
 		String[] entries6 = new String[] { "Set KoordinatenX", "Set KoordinatenY", "Save", "Back (Abort)" };
 		char[] controls6 = new char[] { 'X', 'Y', 'S', 'B' };
 		Runnable[] functions6 = new Runnable[] {
@@ -317,11 +317,14 @@ public class UserInterface {
 		this.menus.popCallback();
 		this.popShowData();
 	}
+	
+	private void compareKoords() {
+		
+	}
 
 	/*
 	 * Get User input in various forms
 	 */
-	
 	private String getUserStringInput(String sPrompt) {
 		System.out.printf("%s ->", sPrompt);
 		return sc.nextLine();
