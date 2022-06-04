@@ -25,7 +25,7 @@ public class Main {
 	
 	private static void setFakeData() {
 		Firma f = new Firma("Firma1", 0, "TEST", 0, "TEST", "TEST");
-		Scooter s = new Scooter(3,3,90, 0.3, 5, false, "Firma1");
+		Scooter s = new Scooter(3,3,20, 0.3, 5, false, "Firma1");
 		f.putScooter(s);
 		Ladepunkt l = new Ladepunkt("Lade1",0 ,0, 10, 5, f.getName());
 		f.putLadepunkt(l);

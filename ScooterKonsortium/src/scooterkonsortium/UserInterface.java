@@ -66,8 +66,8 @@ public class UserInterface {
 		/*
 		 * Operative Mode Macht nicht viel
 		 */
-		String[] entries2 = new String[] { "Show Map", "Move Scooter", "Back" };
-		char[] controls2 = new char[] { 'S', 'M', 'B' };
+		String[] entries2 = new String[] { "Show Map", "Select Scooter", "Back" };
+		char[] controls2 = new char[] { 'M', 'S', 'B' };
 		Runnable[] functions2 = new Runnable[] {
 				() -> this.pushShowData(this.oMap),
 				() -> {
@@ -101,6 +101,7 @@ public class UserInterface {
 				() -> {
 					selMenu.push("Select Scooter");
 					this.pushShowData(this.tmpScooter);
+					this.pushShowData(this.oMap.getCaluclateDistances(oData.getScooterUnder(30)));
 				},
 				() -> {
 					this.selMenu.push("KoordinatenUntermenu");
@@ -188,7 +189,7 @@ public class UserInterface {
 				};
 		menus.createMenu("delete company", entries12, controls12, functions12);
 		
-		//delete Ladepunkt
+		//delete Ladepunkt Menu
 		String[] entries13 = new String[] {"Firma Name", "Ladepunkt Name","Delete", "Back"};
 		char[] controls13 = new char[] {'F','L','D','B'};
 		Runnable [] functions13 = new Runnable[] {
@@ -282,6 +283,7 @@ public class UserInterface {
 					this.menus.pushCallback(() -> {
 						this.tmpScooter.x = this.tmpKoord.getx();
 						this.tmpScooter.y = this.tmpKoord.gety();
+						this.compareKoords();
 					});
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
@@ -319,7 +321,15 @@ public class UserInterface {
 	}
 	
 	private void compareKoords() {
-		
+		Ladepunkt[] aoLadepunkte;
+		for (String Name : oData.getFirmaNames()) {
+			aoLadepunkte = oData.getLadepunkte(Name);
+			for(int k = 0; k < aoLadepunkte.length;k++) {
+				if (aoLadepunkte[k].getx() == this.tmpScooter.x && aoLadepunkte[k].gety() == this.tmpScooter.y) {
+					System.err.println("Can not place Scooter! Same Coordinates as Ladepunkt");
+				}
+			}
+		}
 	}
 
 	/*

@@ -189,6 +189,25 @@ public class KonsortiumData {
 		System.err.printf("Could not locate Scooter at %d %d! There is no scooter there from the company %s.%n", x, y, sNameFirma);
 		return null;
 	}
+	
+	public Scooter[] getScooterUnder(int iProzent) {
+		ArrayList<Scooter> aoScooter  = new ArrayList<>();
+		for (String Name : getFirmaNames()) {
+			for (Scooter s : getScooters(Name))
+			aoScooter.add(s);
+			
+		}
+		ArrayList<Scooter> aoOut  = new ArrayList<>();
+		for (Scooter s : aoScooter) {
+			if (s.getCurrentProzent() < iProzent) {
+				aoOut.add(s);
+				
+			}
+		}
+		Scooter out[] = new Scooter[aoOut.size()];
+		return aoOut.toArray(out);
+
+	}
 
 	public boolean containsCompany(String sFirmenName) {
 		return this.oFirmen.containsKey(sFirmenName);
