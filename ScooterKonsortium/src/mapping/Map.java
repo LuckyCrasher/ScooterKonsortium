@@ -50,7 +50,9 @@ public class Map extends MapTextRenderer {
 		HashMap<Scooter, HashMap<Ladepunkt, Double>> distances = this.oPFA.CalculateDistances();
 		
 		for (Scooter s : distances.keySet()) {
-			
+			for(Ladepunkt l : distances.get(s).keySet()) {
+				sb.append(String.format("Scooter at %d %d -> %s%n", s.x, s.y, l.getNameLadepunkt()));
+			}
 		}
 		
 		return sb.toString();
