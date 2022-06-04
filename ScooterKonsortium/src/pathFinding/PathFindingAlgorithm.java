@@ -1,11 +1,7 @@
 package pathFinding;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map.Entry;
 import java.util.List;
 
 import konsortiumdata.*;
@@ -42,44 +38,20 @@ public class PathFindingAlgorithm {
 		HashMap<Ladepunkt, Double> inner;
 		
 		for(Scooter scooter : aoScooters) {
-			inner = new HashMap<>();
 			for (Ladepunkt ladepunkt : aoLadepunkte) {
-				inner.put(ladepunkt, this.calculateDistance(scooter.x, scooter.y, ladepunkt.x, ladepunkt.y));	
-			}
-			inner = this.sortByValue(inner);
-			out.put(scooter, inner);
+				inner = new HashMap<>();
+				inner.put(ladepunkt, this.calculateDistance(scooter.x, scooter.y, ladepunkt.x, ladepunkt.y));
+				List<Double> LadepunktByDistance = new ArrayList<Double>(inner.values());
+				Collections.sort(LadepunktByDistance);
+				System.out.println(LadepunktByDistance);
+				out.put(scooter, inner);
+			};
 		}
 		
 		return out;
 	}
 	
-	 // function to sort hashmap by values
-    private HashMap<Ladepunkt, Double> sortByValue(HashMap<Ladepunkt, Double> hm)
-    {
-        // Create a list from elements of HashMap
-        LinkedList<Entry<Ladepunkt,Double>> list =
-               new LinkedList<Entry<Ladepunkt, Double> >(hm.entrySet());
- 
-        // Sort the list
-        Collections.sort(list, new Comparator<Entry<Ladepunkt, Double> >() {
-            public int compare(Entry<Ladepunkt, Double> o1,
-                               Entry<Ladepunkt, Double> o2)
-            {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-         
-        // put data from sorted list to hashmap
-        HashMap<Ladepunkt, Double> temp = new LinkedHashMap<Ladepunkt, Double>();
-        Entry<Ladepunkt, Double> aa;
-        for (int i=0;i<Math.min(3, list.size());i++) {
-        	aa = list.get(i);
-        	temp.put(aa.getKey(), aa.getValue());
-        }
-        return temp;
-    }
-	
 	private double calculateDistance(int x1, int y1, int x2, int y2) {
-		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+		return Math.sqrt((x2-x1)*(x2-x1) - (y2-y1)*(y2-y1));
 	}
 }

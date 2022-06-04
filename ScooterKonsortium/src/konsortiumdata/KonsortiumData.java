@@ -167,11 +167,7 @@ public class KonsortiumData {
 	 * @return
 	 */
 	public Scooter[] getScooters(String sNameFirma) {
-		if (!this.oFirmen.containsKey(sNameFirma)) {
-			System.err.printf("Cannot find the Firma %s! The company %s does not exist.%n", sNameFirma, sNameFirma);
-			return null;
-		}
-		return this.oFirmen.get(sNameFirma).getScooters();
+		return null;
 	}
 	
 	public Scooter getScooter(String sNameFirma, int x, int y) {
