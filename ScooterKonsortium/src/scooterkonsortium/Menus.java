@@ -222,7 +222,10 @@ public class Menus {
 	}
 	
 	public Runnable peekCallback() {
-		return this.callbacks.peek();
+		if(this.callbacks.size()>0) {
+			return this.callbacks.peek();
+		}
+		return null;
 	}
 	
 	public void popCallback() {

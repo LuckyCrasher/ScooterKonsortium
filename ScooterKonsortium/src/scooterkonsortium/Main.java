@@ -24,7 +24,7 @@ public class Main {
 	}
 	
 	private static void setFakeData() {
-		Firma f = new Firma("Firma1", 0, "TEST", 0, "TEST", "TEST");
+		Firma f = new Firma("Firma1", 0.5, "TEST", 0, "TEST", "TEST");
 		Scooter s = new Scooter(3,3,20, 0.3, 5, false, "Firma1");
 		f.putScooter(s);
 		Ladepunkt l = new Ladepunkt("Lade1",0 ,0, 10, 5, f.getName());
@@ -35,7 +35,7 @@ public class Main {
 		f.putLadepunkt(l);
 		oData.addFirma(f);
 		
-		f = new Firma("Firma2", 0, " ", 0, " ", " ");
+		f = new Firma("Firma2", 0.5, " ", 0, " ", " ");
 		s = new Scooter(4,6,90, 0.3, 5, false, "Firma2");
 		f.putScooter(s);
 		l = new Ladepunkt("Lade4",9 ,9, 10, 5, f.getName());

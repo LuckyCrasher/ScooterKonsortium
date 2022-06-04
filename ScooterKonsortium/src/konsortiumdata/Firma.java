@@ -67,6 +67,10 @@ public class Firma {
 		return sStadt;
 	}
 
+	public double getKostenJeFahrt()  {
+		return this.dKostenJeFahrt;
+	}
+	
 	public void setStadt(String psStadt) {
 		this.sStadt = psStadt;
 	}

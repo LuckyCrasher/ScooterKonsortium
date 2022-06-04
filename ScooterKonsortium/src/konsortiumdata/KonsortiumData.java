@@ -160,6 +160,18 @@ public class KonsortiumData {
 		return null;
 	}
 	
+	public Ladepunkt getLadepunkt(int x, int y) {
+		for(String s : this.getFirmaNames()) {
+			for (Ladepunkt l : this.getLadepunkte(s)) {
+				if (l.x == x && l.y ==y) {
+					return l;
+				}
+			}
+		}
+		//System.err.printf("Could not locate Ladepunkt at %d %d! There is no Ladepunkt at this location%n", x, y);
+		return null;
+	}
+	
 	/**
 	 * retrieves array of scooters from the specified Firma
 	 * !! Uses the internal Data Structure 

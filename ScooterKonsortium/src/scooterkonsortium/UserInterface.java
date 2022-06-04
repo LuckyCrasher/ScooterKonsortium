@@ -64,7 +64,7 @@ public class UserInterface {
 		menus.createMenu("main", entries1, controls1, functions1);
 
 		/*
-		 * Operative Mode Macht nicht viel
+		 * Operative Mode
 		 */
 		String[] entries2 = new String[] { "Show Map", "Select Scooter", "Back" };
 		char[] controls2 = new char[] { 'M', 'S', 'B' };
@@ -95,25 +95,38 @@ public class UserInterface {
 
 		// OPERATIVE SUB MENUS BEGIN
 		
-		String[] entries14 = new String[] { "Select Scooter", "Select Destination", "Move Scooter", "Back" };
-		char[] controls14 = new char[] { 'S', 'D', 'M', 'B' };
+		String[] entries14 = new String[] {"Select Destination", "Move Scooter", "Back" };
+		char[] controls14 = new char[] {'D', 'M', 'B' };
 		Runnable[] functions14 = new Runnable[] {
 				() -> {
-					selMenu.push("Select Scooter");
-					this.pushShowData(this.tmpScooter);
-					this.pushShowData(this.oMap.getCaluclateDistances(oData.getScooterUnder(30)));
-				},
-				() -> {
+					this.menus.pushCallback(() -> {
+						this.tmpKoord.x = this.tmpKoord.getx();
+						this.tmpKoord.y = this.tmpKoord.gety();
+					});
 					this.selMenu.push("KoordinatenUntermenu");
 					this.pushShowData(this.tmpKoord);
 					},
-				() -> System.err.println("Warning this Feature is Unimplemented!!!"),
+				() -> this.moveScooter(this.tmpKoord.x, this.tmpKoord.y),
 				() -> {
 					selMenu.pop();
 					this.popShowData();
 				}
 				};
 		menus.createMenu("Move Scooter", entries14, controls14, functions14);
+		
+		String[] entries18 = new String[] {"Move Scooter", "Back" };
+		char[] controls18 = new char[] {'M', 'B'};
+		Runnable[] functions18 = new Runnable[] {
+				() -> {
+					Ladepunkt l = this.oMap.getNearestLadepunkt(this.tmpScooter);
+					this.moveScooter(l.x, l.y);
+				},
+				() -> {
+					selMenu.pop();
+					this.popShowData();
+				}
+				};
+		menus.createMenu("Force Move Scooter", entries18, controls18, functions18);
 		
 		//select Scooter menu
 		String[] entries15 = new String[] { "Firma Owning", "Koordinaten", "Load", "Back (Abort)" };
@@ -429,11 +442,51 @@ public class UserInterface {
 			this.selMenu.pop();
 			
 			if(this.tmpScooter.getCurrentProzent()<30) {
-				this.pushShowData(this.oMap.caluclateNearestLadepunkt(this.tmpScooter));
+				this.pushShowData(new Object[] {this.tmpScooter, this.oMap.caluclateNearestLadepunkt(this.tmpScooter)});
+				this.selMenu.push("Force Move Scooter");
 			} else {
 				this.pushShowData(this.tmpScooter);
+				this.selMenu.push("Move Scooter");
 			}
+			
 		}
+	}
+	
+	public void moveScooter(int x, int y) {
+		double distance = oMap.calculateCost(this.tmpScooter.x, this.tmpScooter.y, x, y);
+		int iDistance = (int) Math.round(distance);
+		
+		Firma owning = oData.getFirma(this.tmpScooter.getFirmaOwning());
+		
+		Ladepunkt l = this.oData.getLadepunkt(x, y);
+		
+		if(l != null && l.getCurrentUse() >= l.getLadeCap()) {
+			System.err.println("The Scooter could not be moved to this position. The capacity of the Ladepunkt is reached");
+			return;
+		}
+		if (l!=null) {
+			l.setCurrentUse(l.getCurrentUse()+1);
+			this.tmpScooter.setCurrentStatus(true);
+			this.tmpScooter.setCurrentProzent(this.tmpScooter.getCurrentProzent()+10);
+		}
+		
+		//check if moving away from Ladepunkt
+		l = this.oData.getLadepunkt(this.tmpScooter.x, this.tmpScooter.y);
+		if(l != null) {
+			// we are moving away from Ladepunkt
+			l.setCurrentUse(l.getCurrentUse()-1);
+			this.tmpScooter.setCurrentStatus(false);
+		}
+	
+		this.tmpScooter.setCurrentProzent(this.tmpScooter.getCurrentProzent()-iDistance);
+		this.tmpScooter.setCoveredKm(this.tmpScooter.getCoveredKm() + iDistance);
+		this.tmpScooter.setCurrentEarn(this.tmpScooter.getCurrentEarn() + iDistance * owning.getKostenJeFahrt());
+		
+		this.popShowData();
+		this.selMenu.pop();
+		
+		tmpScooter.setx(x);
+		tmpScooter.sety(y);
 	}
 
 	public void mainLoop() {
