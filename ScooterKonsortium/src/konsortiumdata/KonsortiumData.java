@@ -29,7 +29,7 @@ public class KonsortiumData {
 	public void pushAllData() {
 		for(String f : this.oFirmen.keySet()) {
 			try {
-				this.oDatabase.updateAll(this.oFirmen.get(f));
+				this.oDatabase.pushEverything(this.oFirmen.get(f));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -37,12 +37,27 @@ public class KonsortiumData {
 		}
 	}
 
+	public void fetchAllData() {
+		try {
+			for(Firma f : this.oDatabase.fetchAll()) {
+				this.oFirmen.put(f.getName(), f);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Pushes all Companies to the database
 	 */
 	public void pushFirmen() {
 		for (String f : this.oFirmen.keySet()) {
-			this.oDatabase.pushFirmen(this.oFirmen.get(f));
+			try {
+				this.oDatabase.pushFirma(this.oFirmen.get(f));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -53,7 +68,7 @@ public class KonsortiumData {
 	 */
 	public void pushFirma(String sNameFirma) {
 		try {
-			this.oDatabase.pushFirmen(this.oFirmen.get(sNameFirma));
+			this.oDatabase.pushFirma(this.oFirmen.get(sNameFirma));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
