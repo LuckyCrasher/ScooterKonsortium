@@ -1,13 +1,10 @@
 package scooterkonsortium;
-import java.sql.SQLException;
-import java.util.Arrays;
 
 import database.*;
 import konsortiumdata.Firma;
 import konsortiumdata.KonsortiumData;
 import konsortiumdata.Ladepunkt;
 import konsortiumdata.Scooter;
-import mapping.Koordinaten;
 
 public class Main {
 	
@@ -20,25 +17,11 @@ public class Main {
 		oDatenbank = new Datenbank();
 		oData = new KonsortiumData(oDatenbank);
 		
-		setFakeData();
-		//testDatabase();
+		//setFakeData();
 		
 		oUserInterface = new UserInterface(oData, oDatenbank);
 		oUserInterface.mainLoop();
 	}
-	
-	/*
-	private static void testDatabase() {
-		//oData.pushAllData();
-		try {
-			for(Firma f : oDatenbank.fetchFirmen()) {
-				System.out.println(f);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 
 	private static void setFakeData() {
 		Firma f = new Firma("Firma1", 0.55, "test Stra�e 22", 42279, "Wuppertal", "+49 15522 187654");

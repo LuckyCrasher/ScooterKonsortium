@@ -17,11 +17,6 @@ public class Datenbank {
 		this.oDBConnection.connect();
 	}
 	
-	public Datenbank() {
-		this.oDBConnection = new DatenbankVerbindung();
-		this.oDBConnection.connect();
-	}
-	
 	public void load() {
 		oDBConnection.connect();
 	}
@@ -196,7 +191,7 @@ public class Datenbank {
 	}
 	
 	public Ladepunkt[] fetchLadepunkt(String sNameFirma) throws SQLException {
-		String sQuerry = String.format("SELECT * FROM Ladepunkte WHERE Firma LIKE '%s';", sNameFirma);
+		String sQuerry = String.format("SELECT * FROM Ladepunkte WHERE FirmaName LIKE '%s';", sNameFirma);
 		Statement stmt = oDBConnection.createStatement();
 		ResultSet rs = stmt.executeQuery(sQuerry);
 		ArrayList<Ladepunkt> alLadepunkte = new ArrayList<>();
@@ -209,7 +204,6 @@ public class Datenbank {
         String nameFirma;
 		while (rs.next())
 	    {
-			int id    = rs.getInt("id");
 	        name      = rs.getString("LadepunktName");
 	        max_cap   = rs.getInt("max_kapazitaet");
 	        cur_cap   = rs.getInt("aktuell_benutzt");
@@ -273,7 +267,7 @@ public class Datenbank {
 	}
 	
 	private Scooter[] fetchScooters(String sNameFirma) throws SQLException {
-		String sQuerry = String.format("SELECT * FROM Ladepunkte WHERE Firma LIKE '%s';", sNameFirma);
+		String sQuerry = String.format("SELECT * FROM Scooter WHERE name LIKE '%s';", sNameFirma);
 		Statement stmt = oDBConnection.createStatement();
 		ResultSet rs = stmt.executeQuery(sQuerry);
 		ArrayList<Scooter> alScooter = new ArrayList<>();
@@ -288,14 +282,14 @@ public class Datenbank {
         String  nameOfCompany;
 		while (rs.next())
 	    {
-			int id        = rs.getInt("id");
-	        x             = rs.getInt("LadepunktName");
-	        y             = rs.getInt("max_kapazitaet");
-	        charge        = rs.getInt("aktuell_benutzt");
-	        milage        = rs.getInt("fixe_koords_x");
-	        isCharging    = rs.getBoolean("fixe_koords_y");
-	        nameOfCompany = rs.getString("LadepunktName");
-	        current_earn  = rs.getDouble("FirmaName");
+	        x             = rs.getInt("aufenthalt_x");
+	        y             = rs.getInt("aufenthalt_y");
+	        charge        = rs.getInt("ladezustand");
+	        milage        = rs.getInt("zurueckgelegte_strecke");
+	        isCharging    = rs.getBoolean("fahrtzustand_aktuell");
+	        nameOfCompany = rs.getString("einnahmen_aktuell");
+	        current_earn  = rs.getDouble("einnahmen_aktuell");
+	        nameOfCompany = rs.getString("name");
 	        s = new Scooter(x, y, charge, current_earn, milage, isCharging, nameOfCompany);
 	        alScooter.add(s);
 	    }

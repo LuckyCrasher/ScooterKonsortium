@@ -95,7 +95,7 @@ public class UserInterface {
 		 * Operative Mode Macht nicht viel
 		 */
 		String[] entries2 = new String[] { "Show Map", "Move Scooter", "Load from Database", "Save to Database", "Back" };
-		char[] controls2 = new char[] { 'S', 'M', 'B' };
+		char[] controls2 = new char[] { 'S', 'M', 'L', 'P', 'B' };
 
 		Runnable[] functions2 = new Runnable[] {
 				() -> this.pushShowData(this.oMap),
@@ -103,6 +103,8 @@ public class UserInterface {
 					selMenu.push("Select Scooter");
 					this.pushShowData(this.tmpScooter);
 				},
+				() -> this.oData.fetchAllData(),
+				() -> this.oData.pushAllData(),
 				() -> selMenu.pop()
 				};
 		menus.createMenu("operative", entries2, controls2, functions2);
@@ -110,7 +112,7 @@ public class UserInterface {
 		/*
 		 * Setup Mode erlaubt das erstellen von Elementen
 		 */
-		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Calc Distances","Show Map", "Back" };
+		String[] entries8 = new String[] { "Company Operations", "Ladepunkt Operations", "Scooter Operations", "Calc Distances", "Show Map", "Back" };
 		char[] controls8 = new char[] { 'C', 'L', 'S', 'D','M', 'B' };
 		Runnable[] functions8 = new Runnable[] {
 				() -> selMenu.push("company menu"),
