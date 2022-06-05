@@ -3,6 +3,8 @@ package scooterkonsortium;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;
+
+import database.Datenbank;
 import mapping.*;
 
 import konsortiumdata.*;
@@ -11,6 +13,7 @@ import mapping.*;
 public class UserInterface {
 	private Map oMap;
 	private KonsortiumData oData;
+	private Datenbank oDatenbank;
 	
 	private Menus menus;
 	private Scanner sc;
@@ -29,8 +32,9 @@ public class UserInterface {
 	private boolean bRunning;
 	private Object map;
 	
+	
 
-	public UserInterface(KonsortiumData oData) {
+	public UserInterface(KonsortiumData oData, Datenbank oDatenbank) {
 		this.oData = oData;
 		this.oMap = new Map(oData, 10, 10);
 
@@ -47,6 +51,7 @@ public class UserInterface {
 		
 		createMenus();
 		selMenu.add("main");
+		this.oDatenbank = oDatenbank;
 	}
 
 	private void createMenus() {
@@ -54,20 +59,44 @@ public class UserInterface {
 		 * Main Menu Erlaubt es einen Modus zu wählen
 		 */
 
-		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Quit" };
-		char[] controls1 = new char[] { 'O', 'S', 'Q' };
+		String[] entries1 = new String[] { "Go to Operative mode", "Go to Setup mode", "Database Settings", "Connect to Database", "Quit" };
+		char[] controls1 = new char[] { 'O', 'S', 'D', 'C', 'Q' };
 		Runnable[] functions1 = new Runnable[] {
 				() -> selMenu.push("operative"),
 				() -> selMenu.push("setup"),
+				() -> {
+					this.pushShowData(oDatenbank);
+					selMenu.push("Database Settings");
+				},
+				() -> this.connectToDatabase(),
 				() -> this.bRunning = false
 				};
 		menus.createMenu("main", entries1, controls1, functions1);
 
 		/*
-		 * Operative Mode
+		 * Database Settings controls relevant Settings
 		 */
-		String[] entries2 = new String[] { "Show Map", "Select Scooter", "Back" };
-		char[] controls2 = new char[] { 'M', 'S', 'B' };
+		
+		String[] entries17 = new String[] {"Set Server", "Set User", "Set Password", "Set Database", "Save"};
+		char[] controls17 = new char[] { 'A', 'U', 'P', 'D', 'S' };
+		Runnable[] functions17 = new Runnable[] {
+				() -> this.oDatenbank.setServer(this.getUserStringInput("MySQL Server")),
+				() -> this.oDatenbank.setUser(this.getUserStringInput("MySQL User")),
+				() -> this.oDatenbank.setPassword(this.getUserStringInput("MySQL Password")),
+				() -> this.oDatenbank.setDatabase(this.getUserStringInput("MySQL Database")),
+				() -> {
+					this.popShowData();
+					selMenu.pop();
+				}
+				};
+		menus.createMenu("Database Settings", entries17, controls17, functions17);
+		
+		/*
+		 * Operative Mode Macht nicht viel
+		 */
+		String[] entries2 = new String[] { "Show Map", "Move Scooter", "Load from Database", "Save to Database", "Back" };
+		char[] controls2 = new char[] { 'S', 'M', 'B' };
+
 		Runnable[] functions2 = new Runnable[] {
 				() -> this.pushShowData(this.oMap),
 				() -> {
@@ -326,13 +355,21 @@ public class UserInterface {
 		menus.createMenu("KoordinatenUntermenu", entries6, controls6, functions6);
 	}
 
+	private void connectToDatabase() {
+		if (!this.oDatenbank.connect()) {
+			System.err.println("Connection to Database failed! Please enter valid connection settings");
+		} else {
+			System.out.println("Connected to Database");
+		}
+	}
+
 	private void leaveKoordMenu() {
 		this.selMenu.pop();
 		this.menus.peekCallback().run();
 		this.menus.popCallback();
 		this.popShowData();
 	}
-	
+
 	private void compareKoords() {
 		Ladepunkt[] aoLadepunkte;
 		for (String Name : oData.getFirmaNames()) {
@@ -344,6 +381,7 @@ public class UserInterface {
 			}
 		}
 	}
+
 
 	/*
 	 * Get User input in various forms

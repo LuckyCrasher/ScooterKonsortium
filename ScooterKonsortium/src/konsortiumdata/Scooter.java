@@ -1,5 +1,6 @@
 package konsortiumdata;
 import mapping.*;
+import java.util.UUID;
 
 public class Scooter extends MapObjekt {
 	private int iCurrentProzent;
@@ -7,6 +8,7 @@ public class Scooter extends MapObjekt {
 	private int iCoveredKm;
 	private boolean bCurrentStatus;
 	private String sFirmaOwning;
+	private String sUUID;
 	
 	public Scooter(int x, int y, int piCurrentProzent, double pdCurrentEarn, int piCoveredKm, boolean pbCurrentStatus, String sFirmaOwning) {
 		this.x = x;
@@ -16,6 +18,23 @@ public class Scooter extends MapObjekt {
 		this.iCoveredKm = piCoveredKm;
 		this.bCurrentStatus = pbCurrentStatus;
 		this.sFirmaOwning = sFirmaOwning;
+		this.sUUID = generateUUID();
+	}
+	
+	public Scooter(int x, int y, int piCurrentProzent, double pdCurrentEarn, int piCoveredKm, boolean pbCurrentStatus, String sFirmaOwning, String uuid) {
+		this.x = x;
+		this.y = y;
+		this.iCurrentProzent = piCurrentProzent;
+		this.dCurrentEarn = pdCurrentEarn;
+		this.iCoveredKm = piCoveredKm;
+		this.bCurrentStatus = pbCurrentStatus;
+		this.sFirmaOwning = sFirmaOwning;
+		this.sUUID = uuid;
+	}
+	
+	private String generateUUID() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
 	}
 	
 	public Scooter() {
@@ -25,6 +44,7 @@ public class Scooter extends MapObjekt {
 		this.dCurrentEarn = 0.0;
 		this.iCoveredKm = 0;
 		this.bCurrentStatus = false;
+		this.sUUID = this.generateUUID();
 	}
 	
 	public int getCurrentProzent() {
@@ -53,6 +73,11 @@ public class Scooter extends MapObjekt {
 	public boolean getCurrentStatus() {
 		return bCurrentStatus;
 	}
+	
+	public String getUUID() {
+		return this.sUUID;
+	}
+	
 	public void setCurrentStatus(boolean pbCurrentStatus) {
 		this.bCurrentStatus = pbCurrentStatus;
 	}
