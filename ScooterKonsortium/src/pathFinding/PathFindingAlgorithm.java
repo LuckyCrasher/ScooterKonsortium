@@ -52,6 +52,34 @@ public class PathFindingAlgorithm {
 		
 		return out;
 	}
+	public HashMap<Scooter, HashMap<Ladepunkt, Double>> CalculateDistances(Scooter[] aoScooter) {
+		String[] asFirmenNames = oData.getFirmaNames();
+		ArrayList<Ladepunkt> aoLadepunkte = new ArrayList<>();
+		ArrayList<Scooter> aoScooters = new ArrayList<>();
+		
+		for (String s : asFirmenNames) {
+			for (Ladepunkt l : oData.getLadepunkte(s)) {
+				aoLadepunkte.add(l);
+			}
+			for (Scooter scooter : aoScooter) {
+				aoScooters.add(scooter);
+			}
+		}
+		
+		HashMap<Scooter, HashMap<Ladepunkt, Double>> out = new HashMap<>();
+		HashMap<Ladepunkt, Double> inner;
+		
+		for(Scooter scooter : aoScooters) {
+			inner = new HashMap<>();
+			for (Ladepunkt ladepunkt : aoLadepunkte) {
+				inner.put(ladepunkt, this.calculateDistance(scooter.x, scooter.y, ladepunkt.x, ladepunkt.y));	
+			}
+			inner = this.sortByValue(inner);
+			out.put(scooter, inner);
+		}
+		
+		return out;
+	}
 	
 	 // function to sort hashmap by values
     private HashMap<Ladepunkt, Double> sortByValue(HashMap<Ladepunkt, Double> hm)
@@ -79,7 +107,27 @@ public class PathFindingAlgorithm {
         return temp;
     }
 	
-	private double calculateDistance(int x1, int y1, int x2, int y2) {
+	public double calculateDistance(int x1, int y1, int x2, int y2) {
 		return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	}
+
+	public HashMap<Ladepunkt, Double> calculateNearestLadepunkt(Scooter scooter) {
+		String[] asFirmenNames = oData.getFirmaNames();
+		ArrayList<Ladepunkt> aoLadepunkte = new ArrayList<>();
+		
+		for (String s : asFirmenNames) {
+			for (Ladepunkt l : oData.getLadepunkte(s)) {
+				aoLadepunkte.add(l);
+			}
+		}
+		
+		HashMap<Ladepunkt, Double> out = new HashMap<>();
+		
+		for (Ladepunkt ladepunkt : aoLadepunkte) {
+			out.put(ladepunkt, this.calculateDistance(scooter.x, scooter.y, ladepunkt.x, ladepunkt.y));	
+		}
+		
+		out = this.sortByValue(out);
+		return out;
 	}
 }

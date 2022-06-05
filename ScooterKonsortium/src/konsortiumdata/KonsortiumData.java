@@ -198,6 +198,18 @@ public class KonsortiumData {
 		return null;
 	}
 	
+	public Ladepunkt getLadepunkt(int x, int y) {
+		for(String s : this.getFirmaNames()) {
+			for (Ladepunkt l : this.getLadepunkte(s)) {
+				if (l.x == x && l.y ==y) {
+					return l;
+				}
+			}
+		}
+		//System.err.printf("Could not locate Ladepunkt at %d %d! There is no Ladepunkt at this location%n", x, y);
+		return null;
+	}
+	
 	/**
 	 * retrieves array of scooters from the specified Firma
 	 * !! Uses the internal Data Structure 
@@ -226,6 +238,25 @@ public class KonsortiumData {
 		}
 		System.err.printf("Could not locate Scooter at %d %d! There is no scooter there from the company %s.%n", x, y, sNameFirma);
 		return null;
+	}
+	
+	public Scooter[] getScooterUnder(int iProzent) {
+		ArrayList<Scooter> aoScooter  = new ArrayList<>();
+		for (String Name : getFirmaNames()) {
+			for (Scooter s : getScooters(Name))
+			aoScooter.add(s);
+			
+		}
+		ArrayList<Scooter> aoOut  = new ArrayList<>();
+		for (Scooter s : aoScooter) {
+			if (s.getCurrentProzent() < iProzent) {
+				aoOut.add(s);
+				
+			}
+		}
+		Scooter out[] = new Scooter[aoOut.size()];
+		return aoOut.toArray(out);
+
 	}
 
 	public boolean containsCompany(String sFirmenName) {

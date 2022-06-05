@@ -47,7 +47,7 @@ public class Ladepunkt extends MapObjekt {
 	}
 	
 	public String render() {
-		return String.format("L\n%d/%d", iLadeCap, iCurrentUse);
+		return String.format("L\n%d/%d", this.iCurrentUse, iLadeCap);
 	}
 	
 	public String toString() {

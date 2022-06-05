@@ -17,6 +17,11 @@ public class Datenbank {
 		this.oDBConnection.connect();
 	}
 	
+	public Datenbank() {
+		this.oDBConnection = new DatenbankVerbindung();
+		this.oDBConnection.connect();
+	}
+	
 	public void load() {
 		oDBConnection.connect();
 	}
@@ -79,6 +84,7 @@ public class Datenbank {
 
 	public int getFirmaID(String name) throws SQLException {
 		String sQuerry = String.format("SELECT ID FROM firma_daten WHERE name LIKE '%s';", name);
+
 		String[] returnValue = oDBConnection.sendQuerry(sQuerry);
 		String returnValue2 = returnValue[0];
 		int i = Integer.parseInt(returnValue2);
@@ -89,7 +95,6 @@ public class Datenbank {
 		String name = poFirma.getName();
 		String adresse = poFirma.getAdresse();
 		String hotline = poFirma.getHotline();
-		
 		int ortsID = this.pushStadt(poFirma.getStadt(), poFirma.getPLZ());
 		
 		String sQuerry2 = String.format("INSERT INTO firma_daten (name, adresse, hotline, ortsID)"
@@ -102,7 +107,6 @@ public class Datenbank {
 		String fname = poFirma.getName();
 		String adresse = poFirma.getAdresse();
 		String hotline = poFirma.getHotline();
-		
 		int ortsID = pushStadt(poFirma.getStadt(), poFirma.getPLZ());
 		
 		String sQuerry2 = String.format("UPDATE firma_daten SET name='%s', adresse='%s', hotline='%s', ortsID=%d WHERE name LIKE '%s';",
@@ -174,6 +178,7 @@ public class Datenbank {
 				name, max_kapazitaet, aktuell_benutzt, fixe_koords_x, fixe_koords_y, name);
 		
 		oDBConnection.sendQuerryNoReturn(sQuerry);
+
 	}
 	
 	public void putLadepunkt(Ladepunkt poLadepunkt) throws SQLException {

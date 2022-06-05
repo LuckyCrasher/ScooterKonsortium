@@ -21,8 +21,6 @@ public class DatenbankVerbindung {
 		this.iPort     = 3306;
 		this.sDatabase = "ik_scooter";
 		
-		
-		
 		this.user     = "scooter";
 		this.password = "scooter";
 	}
