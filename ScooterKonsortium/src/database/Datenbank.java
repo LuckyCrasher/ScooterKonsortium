@@ -279,6 +279,7 @@ public class Datenbank {
         int     milage;
         boolean isCharging;
         double  current_earn;
+        String  uuid;
         String  nameOfCompany;
 		while (rs.next())
 	    {
@@ -289,8 +290,9 @@ public class Datenbank {
 	        isCharging    = rs.getBoolean("fahrtzustand_aktuell");
 	        nameOfCompany = rs.getString("einnahmen_aktuell");
 	        current_earn  = rs.getDouble("einnahmen_aktuell");
+	        uuid 		  = rs.getString("uuid");
 	        nameOfCompany = rs.getString("name");
-	        s = new Scooter(x, y, charge, current_earn, milage, isCharging, nameOfCompany);
+	        s = new Scooter(x, y, charge, current_earn, milage, isCharging, nameOfCompany, uuid);
 	        alScooter.add(s);
 	    }
 		stmt.close();
