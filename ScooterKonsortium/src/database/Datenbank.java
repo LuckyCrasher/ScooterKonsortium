@@ -14,7 +14,7 @@ public class Datenbank {
 	
 	public Datenbank() {
 		this.oDBConnection  = new DatenbankVerbindung();
-		this.oDBConnection.connect();
+		//this.oDBConnection.connect();
 	}
 	
 	public void load() {
