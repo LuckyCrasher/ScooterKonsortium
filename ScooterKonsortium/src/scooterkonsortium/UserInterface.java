@@ -25,13 +25,12 @@ public class UserInterface {
 	 * added where needed. Then these attributes will be assigned new empty
 	 * temporary objects
 	 */
+	
 	private Firma tmpFirma;
 	private Scooter tmpScooter;
 	private Ladepunkt tmpLadepunkt;
 	private Koordinaten tmpKoord;
 	private boolean bRunning;
-	private Object map;
-	
 	
 
 	public UserInterface(KonsortiumData oData, Datenbank oDatenbank) {
